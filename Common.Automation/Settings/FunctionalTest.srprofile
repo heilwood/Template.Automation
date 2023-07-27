@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestProfile xmlns="http://www.specflow.org/schemas/plus/TestProfile/1.5">
+	<Settings projectName="Automation.Common" />
+	<Server serverUrl="http://swc195240.europe.ifint.biz:6365" publishResults="true" />
+	<VSTest testRetryResults="Unified" passRateAbsolute="1"/>
+	<Report>
+		<Template name="ReportTemplates\ClientJsonTemplateSpecRun3.cshtml" outputName="TestResults.json" />
+	</Report>
+	<Execution stopAfterFailures="0" retryFor="Failing" testThreadCount="10" testSchedulingMode="Adaptive" retryCount="2"/>
+	<Filter>!@Excluded &amp; !@Layout &amp; !@SendResults</Filter>
+	<TestAssemblyPaths>
+		<TestAssemblyPath>Automation.Common.dll</TestAssemblyPath>
+	</TestAssemblyPaths>
+	<DeploymentTransformation>
+		<Steps>
+		</Steps>
+	</DeploymentTransformation>
+	<Targets>
+		<Target name="Chrome_PC_Functional">
+			<Filter>!@Excluded &amp; !@Layout &amp; !@SendResults</Filter>
+			<DeploymentTransformationSteps>
+				<EnvironmentVariable variable="browser" value="Chrome" />
+      </DeploymentTransformationSteps>
+		</Target>
+	</Targets>
+</TestProfile>
