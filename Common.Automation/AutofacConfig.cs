@@ -24,22 +24,22 @@ namespace Common.Automation
             _defaultContainer = builder.Build();
         }
 
-        public static void RegisterDriver(IWebDriver driver)
-        {
-            _currentScope?.Dispose();  // Dispose previous scope if it exists
-
-            _currentScope = _defaultContainer.BeginLifetimeScope(b =>
-            {
-                b.RegisterInstance(driver).As<IWebDriver>().SingleInstance();
-            });
-        }
-
         public static T Resolve<T>()
         {
             if (_currentScope == null)
                 _currentScope = _defaultContainer.BeginLifetimeScope();
 
             return _currentScope.Resolve<T>();
+        }
+
+        public static void RegisterDriver(IWebDriver driver)
+        {
+            _currentScope?.Dispose();
+
+            _currentScope = _defaultContainer.BeginLifetimeScope(b =>
+            {
+                b.RegisterInstance(driver).As<IWebDriver>().SingleInstance();
+            });
         }
 
         private static void RegisterDevToolsSession(ContainerBuilder builder)
@@ -57,20 +57,15 @@ namespace Common.Automation
                 var sessionManager = c.Resolve<IDevToolsSessionManager>();
                 return new NetworkAdapter(sessionManager);
             }).SingleInstance();
-
-            // Add other adapters here as needed
         }
 
         private static void RegisterHelpers(ContainerBuilder builder)
         {
             builder.RegisterType<LoggerHelper>().SingleInstance();
             builder.RegisterType<ScreenShotHelper>().InstancePerDependency();
-            builder.RegisterType<DriverHolder>().InstancePerDependency();  // Added DriverHolder registration
-
-            // Register other types as needed
+            builder.RegisterType<DriverHolder>().InstancePerDependency();
         }
 
-        // Optional: For manually disposing the current scope if needed.
         public static void DisposeCurrentScope()
         {
             _currentScope?.Dispose();

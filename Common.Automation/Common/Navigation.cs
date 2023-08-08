@@ -19,7 +19,6 @@ namespace Common.Automation.Common
         public void OpenPage(string url)
         {
             Driver.Url = url;
-
             _devToolsSessionManager.SetDevSession(Driver);
             NetworkAdapter.ListenRequests();
             NetworkAdapter.ListenLoadingFinished();
