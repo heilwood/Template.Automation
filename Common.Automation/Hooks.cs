@@ -14,10 +14,11 @@ namespace Common.Automation
         private IWebDriver _driver;
         private ScreenShotHelper _screenShotHelper;
         private readonly BrowserName _browser;
+        private readonly BrowserFactory _browserFactory;
 
-        protected Hooks()
-        {
+        protected Hooks() {
             Enum.TryParse(ConfigManager.BrowserName, out _browser);
+            _browserFactory = new BrowserFactory();
         }
 
 
@@ -25,10 +26,10 @@ namespace Common.Automation
         public void BeforeScenario()
         {
             //_driver = BrowserFactory.RemoteDriver(_browser, "http://swc195240:4445/wd/hub");
-            _driver = BrowserFactory.LocalDriver(_browser);
+            _driver = _browserFactory.LocalDriver(_browser);
             _driver.Manage().Window.Maximize();
-            DriverHolder.Init(_driver);
-            ContainerHolder.InitializeContainer(_driver);
+            AutofacConfig.RegisterDriver(_driver);
+            //DriverHolder.Init(_driver);
         }
 
         [AfterScenario]
@@ -36,13 +37,13 @@ namespace Common.Automation
         {
             if (ScenarioContext.Current.TestError != null)
             {
-                _screenShotHelper = ContainerHolder.Resolve<ScreenShotHelper>();
+                _screenShotHelper = AutofacConfig.Resolve<ScreenShotHelper>();
                 _screenShotHelper.CurrentViewScreenShot();
             }
 
             _driver?.Quit();
-            DriverHolder.Utilize();
-            ContainerHolder.DisposeContainer();
+            //DriverHolder.Utilize();
+            AutofacConfig.DisposeCurrentScope();
         }
     }
 }

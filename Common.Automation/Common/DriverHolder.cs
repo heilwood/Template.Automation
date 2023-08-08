@@ -1,32 +1,21 @@
 ﻿using System;
+using Common.Automation.Common.Helpers;
+using Common.Automation.Common.Helpers.DevTools;
 using OpenQA.Selenium;
 
 namespace Common.Automation.Common
 {
-    
     public class DriverHolder
     {
-        private static IWebDriver _driver;
+        public T CreateObject<T>()
+        {
+            var driver = AutofacConfig.Resolve<IWebDriver>();
+            var networkAdapter = AutofacConfig.Resolve<NetworkAdapter>();
+            var loggerHelper = AutofacConfig.Resolve<LoggerHelper>();
+            var devToolsSessionManager = AutofacConfig.Resolve<IDevToolsSessionManager>();
 
-        public static T CreateObject<T>()
-        {     
-            T obj = (T)Activator.CreateInstance(typeof(T), _driver);
+            T obj = (T)Activator.CreateInstance(typeof(T), driver, networkAdapter, loggerHelper, devToolsSessionManager);
             return obj;
-        }
-
-        public static void Init(IWebDriver driver)
-        {
-            if (_driver == null)
-            {
-                _driver = driver;
-                return;
-            }
-            throw new Exception("Trying to initialize Driver more than once!");
-        }
-
-        public static void Utilize()
-        {
-            _driver = null;
         }
     }
 }

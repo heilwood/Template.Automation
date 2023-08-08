@@ -10,16 +10,16 @@ namespace Common.Automation.Common.Browser
 {
     public class BrowserFactory
     {
-        private static readonly ChromeSettings ChromeSettings;
-        private static readonly FirefoxSettings FirefoxSettings;
+        private readonly ChromeSettings _chromeSettings;
+        private readonly FirefoxSettings _firefoxSettings;
 
-        static BrowserFactory()
+        public BrowserFactory()
         {
-            ChromeSettings = new ChromeSettings();
-            FirefoxSettings = new FirefoxSettings();
+            _chromeSettings = new ChromeSettings();
+            _firefoxSettings = new FirefoxSettings();
         }
 
-        public static IWebDriver LocalDriver(BrowserName browser)
+        public IWebDriver LocalDriver(BrowserName browser)
         {
             var options = GetLocalBrowserSettings(browser).GetBrowserSettings();
             switch (browser)
@@ -34,26 +34,26 @@ namespace Common.Automation.Common.Browser
             throw new Exception($"Unknown browser name {browser}");
         }
 
-        public static IWebDriver RemoteDriver(BrowserName browser, string serverUrl)
+        public IWebDriver RemoteDriver(BrowserName browser, string serverUrl)
         {
             var cap = GetRemoteBrowseSettings(browser);
             var driver = new RemoteWebDriver(new Uri(serverUrl), cap);
             return driver;
         }
 
-        private static IBrowserSettings GetLocalBrowserSettings(BrowserName browser)
+        private IBrowserSettings GetLocalBrowserSettings(BrowserName browser)
         {
             switch (browser)
             {
                 case BrowserName.Firefox:
-                    return FirefoxSettings;
+                    return _firefoxSettings;
                 case BrowserName.Chrome:
-                    return ChromeSettings;
+                    return _chromeSettings;
             }
             throw new Exception($"Unknown browser name {browser}");
         }
 
-        public static ICapabilities GetRemoteBrowseSettings(BrowserName browser)
+        public ICapabilities GetRemoteBrowseSettings(BrowserName browser)
         {
             var cap = GetLocalBrowserSettings(browser);
             return cap.GetBrowserSettings().ToCapabilities();

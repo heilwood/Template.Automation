@@ -1,4 +1,5 @@
 ﻿using Common.Automation.Common.Actions.ElementsBase;
+using Common.Automation.Common.Helpers;
 using Common.Automation.Common.Helpers.DevTools;
 using OpenQA.Selenium;
 
@@ -9,14 +10,14 @@ namespace Common.Automation.Common
     {
         private readonly IDevToolsSessionManager _devToolsSessionManager;
 
-        public Navigation(IWebDriver driver) : base(driver)
+        public Navigation(IWebDriver driver, NetworkAdapter networkAdapter, LoggerHelper loggerHelper, IDevToolsSessionManager devToolsSessionManager)
+            : base(driver, networkAdapter, loggerHelper)
         {
-            _devToolsSessionManager = ContainerHolder.Resolve<IDevToolsSessionManager>();
+            _devToolsSessionManager = devToolsSessionManager;
         }
 
         public void OpenPage(string url)
         {
-
             Driver.Url = url;
 
             _devToolsSessionManager.SetDevSession(Driver);

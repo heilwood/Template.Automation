@@ -1,10 +1,13 @@
-﻿using OpenQA.Selenium;
+﻿using Common.Automation.Common.Helpers;
+using Common.Automation.Common.Helpers.DevTools;
+using OpenQA.Selenium;
 
 namespace Common.Automation.Common.Actions.ElementsBase
 {
     public class InputElementBase : ElementBase
     {
-        public InputElementBase(IWebDriver driver) : base(driver)
+        public InputElementBase(IWebDriver driver, NetworkAdapter networkAdapter, LoggerHelper loggerHelper)
+            : base(driver, networkAdapter, loggerHelper)
         {
         }
 

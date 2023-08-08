@@ -14,9 +14,9 @@ namespace Common.Automation.Common.Helpers.ScreenShot
         private readonly LoggerHelper _loggerHelper;
         private readonly IWebDriver _driver;
 
-        public ScreenShotHelper(IWebDriver driver)
+        public ScreenShotHelper(IWebDriver driver, LoggerHelper loggerHelper)
         {
-            _loggerHelper = new LoggerHelper();
+            _loggerHelper = loggerHelper;
             _driver = driver;
         }
 

@@ -1,4 +1,6 @@
 ﻿using System.Text.RegularExpressions;
+using Common.Automation.Common.Helpers;
+using Common.Automation.Common.Helpers.DevTools;
 using FluentAssertions;
 using OpenQA.Selenium;
 
@@ -6,7 +8,8 @@ namespace Common.Automation.Common.Actions.ElementsBase
 {
     public class TextElementBase : ElementBase
     {
-        public TextElementBase(IWebDriver driver) : base(driver)
+        public TextElementBase(IWebDriver driver, NetworkAdapter networkAdapter, LoggerHelper loggerHelper)
+            : base(driver, networkAdapter, loggerHelper)
         {
         }
 

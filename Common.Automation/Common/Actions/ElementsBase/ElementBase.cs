@@ -19,11 +19,11 @@ namespace Common.Automation.Common.Actions.ElementsBase
         protected readonly NetworkAdapter NetworkAdapter;
 
 
-        public ElementBase(IWebDriver driver)
+        public ElementBase(IWebDriver driver, NetworkAdapter networkAdapter, LoggerHelper loggerHelper)
         {
-            NetworkAdapter = ContainerHolder.Resolve<NetworkAdapter>();
-            LoggerHelper = new LoggerHelper();
-            Driver = driver;
+            NetworkAdapter = networkAdapter ?? throw new ArgumentNullException(nameof(networkAdapter));
+            LoggerHelper = loggerHelper ?? throw new ArgumentNullException(nameof(loggerHelper));
+            Driver = driver ?? throw new ArgumentNullException(nameof(driver));
             Action = new OpenQA.Selenium.Interactions.Actions(driver);
             Wait = new WebDriverWait(driver, TimeSpan.FromSeconds(ConfigManager.WaitTime));
         }
