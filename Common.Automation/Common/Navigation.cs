@@ -8,18 +8,17 @@ namespace Common.Automation.Common
 
     public class Navigation : ElementBase
     {
-        private readonly IDevToolsSessionManager _devToolsSessionManager;
+        public IDevToolsSessionManager DevToolsSessionManager { get; set; }
 
-        public Navigation(IWebDriver driver, NetworkAdapter networkAdapter, LoggerHelper loggerHelper, IDevToolsSessionManager devToolsSessionManager)
+        public Navigation(IWebDriver driver, NetworkAdapter networkAdapter, LoggerHelper loggerHelper)
             : base(driver, networkAdapter, loggerHelper)
         {
-            _devToolsSessionManager = devToolsSessionManager;
         }
 
         public void OpenPage(string url)
         {
             Driver.Url = url;
-            _devToolsSessionManager.SetDevSession(Driver);
+            DevToolsSessionManager.SetDevSession(Driver);
             NetworkAdapter.ListenRequests();
             NetworkAdapter.ListenLoadingFinished();
             NetworkAdapter.ListenLoadingFailed();

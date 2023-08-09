@@ -25,7 +25,7 @@ namespace Common.Automation
         [BeforeScenario]
         public void BeforeScenario()
         {
-            //_driver = BrowserFactory.RemoteDriver(_browser, "http://swc195240:4445/wd/hub");
+            //_driver = _browserFactory.RemoteDriver(_browser, "http://10.162.113.68:4443/wd/hub");
             _driver = _browserFactory.LocalDriver(_browser);
             _driver.Manage().Window.Maximize();
             AutofacConfig.RegisterDriver(_driver);

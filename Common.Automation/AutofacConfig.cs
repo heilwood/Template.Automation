@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Common.Automation.Common;
+using Common.Automation.Common.Actions;
 using Common.Automation.Common.Actions.ElementsBase;
 using Common.Automation.Common.Helpers;
 using Common.Automation.Common.Helpers.DevTools;
@@ -20,7 +21,7 @@ namespace Common.Automation
             RegisterDevToolsSession(builder);
             RegisterAdapters(builder);
             RegisterHelpers(builder);
-
+            RegisterElements(builder);
             _defaultContainer = builder.Build();
         }
 
@@ -63,7 +64,22 @@ namespace Common.Automation
         {
             builder.RegisterType<LoggerHelper>().SingleInstance();
             builder.RegisterType<ScreenShotHelper>().InstancePerDependency();
-            builder.RegisterType<DriverHolder>().InstancePerDependency();
+        }
+
+        private static void RegisterElements(ContainerBuilder builder)
+        {
+            builder.RegisterType<Button>().InstancePerDependency();
+            builder.RegisterType<Checkbox>().InstancePerDependency();
+            builder.RegisterType<DatePicker>().InstancePerDependency();
+            builder.RegisterType<Div>().InstancePerDependency();
+            builder.RegisterType<Input>().InstancePerDependency();
+            builder.RegisterType<Select>().InstancePerDependency();
+            builder.RegisterType<TextElement>().InstancePerDependency();
+            builder.RegisterType<Href>().InstancePerDependency();
+            builder.RegisterType<Radio>().InstancePerDependency();
+            builder.RegisterType<Window>().InstancePerDependency();
+            builder.RegisterType<Navigation>().InstancePerDependency().PropertiesAutowired();
+            builder.RegisterType<Tab>().InstancePerDependency();
         }
 
         public static void DisposeCurrentScope()
