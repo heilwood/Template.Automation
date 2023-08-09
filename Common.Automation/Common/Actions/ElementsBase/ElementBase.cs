@@ -12,8 +12,8 @@ namespace Common.Automation.Common.Actions.ElementsBase
 {
     public class ElementBase
     {
-        protected static IWebDriver Driver;
-        public readonly LoggerHelper LoggerHelper;
+        protected IWebDriver Driver;
+        protected readonly LoggerHelper LoggerHelper;
         protected readonly NetworkAdapter NetworkAdapter;
 
 
@@ -68,18 +68,10 @@ namespace Common.Automation.Common.Actions.ElementsBase
             WaitUntilVisible(elem, seconds);
         }
 
-
         public bool IsDisplayed(By by)
         {
-            try
-            {
-                return Driver.FindElement(by).Displayed;
-            }
-            catch
-            {
-                return false;
-            }
-
+            var elements = Driver.FindElements(by);
+            return elements.Count > 0 && elements[0].Displayed;
         }
 
         public void WaitForPageToLoad()
