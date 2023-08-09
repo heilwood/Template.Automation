@@ -24,9 +24,12 @@ namespace Common.Automation.Common.Actions.ElementsBase
             Driver = driver ?? throw new ArgumentNullException(nameof(driver));
         }
 
-        public WebDriverWait Wait(IWebDriver driver, int seconds = 15)
+        public WebDriverWait Wait(IWebDriver driver, string errorText, int seconds = 15)
         {
-            return new WebDriverWait(driver, TimeSpan.FromSeconds(seconds));
+            return new WebDriverWait(driver, TimeSpan.FromSeconds(seconds))
+            {
+                Message = errorText
+            };
         }
 
         public OpenQA.Selenium.Interactions.Actions Actions(IWebDriver driver)
@@ -55,14 +58,8 @@ namespace Common.Automation.Common.Actions.ElementsBase
 
         public void WaitUntilVisible(IWebElement elem, int seconds = 15)
         {
-            try
-            {
-                Wait(Driver, seconds).Until(driver => elem.Displayed);
-            }
-            catch
-            {
-                throw new Exception("Element is not visible");
-            }
+            var errorTxt = "Element is not visible";
+            Wait(Driver, errorTxt, seconds).Until(driver => elem.Displayed);
         }
 
         public void WaitUntilVisible(By by, int seconds = 15)
@@ -87,7 +84,8 @@ namespace Common.Automation.Common.Actions.ElementsBase
 
         public void WaitForPageToLoad()
         {
-            Wait(Driver, ConfigManager.PageLoadWaitTime)
+            var errorTxt = "Page is not loaded";
+            Wait(Driver, errorTxt, 50)
                 .Until(d => ((IJavaScriptExecutor)Driver)
                     .ExecuteScript("return document.readyState").ToString()!.Equals("complete"));
         }
@@ -95,15 +93,8 @@ namespace Common.Automation.Common.Actions.ElementsBase
 
         public void WaitUntilElemPresent(By by)
         {
-            try
-            {
-                Wait(Driver).Until(d => IsPresent(by));
-            }
-            catch (WebDriverTimeoutException)
-            {
-                throw new NoSuchElementException($"Element not found with by: {by}");
-            }
-
+            var errorTxt = $"Element not found with by: {by}";
+            Wait(Driver, errorTxt).Until(d => IsPresent(by));
         }
 
         public IReadOnlyCollection<IWebElement> GetLocatedElements(By by)
@@ -147,14 +138,15 @@ namespace Common.Automation.Common.Actions.ElementsBase
 
         public void WaitUntilAllRequestsFinished()
         {
+            var errorTxt = "Some requests have been stuck";
             try
             {
-                Wait(Driver).Until(d => IsRequestFinished());
+                Wait(Driver, errorTxt, 50).Until(d => IsRequestFinished());
             }
-            catch (WebDriverTimeoutException)
+            catch (WebDriverTimeoutException ex)
             {
                 NetworkAdapter.PrintStuckRequests();
-                throw new WebDriverTimeoutException($"Some requests has been stuck");
+                throw new WebDriverTimeoutException(errorTxt, ex);
             }
         }
 
@@ -171,14 +163,8 @@ namespace Common.Automation.Common.Actions.ElementsBase
 
         public void WaitUntilReqRespListsCleaned()
         {
-            try
-            {
-                Wait(Driver).Until(d => IsRespReqListsCleaned());
-            }
-            catch (WebDriverTimeoutException)
-            {
-                throw new WebDriverTimeoutException($"Can't clean request and response lists from DevTools");
-            }
+            var errorTxt = "Can't clean request and response lists from DevTools";
+            Wait(Driver, errorTxt).Until(d => IsRespReqListsCleaned());
         }
     }
 }
