@@ -20,19 +20,19 @@ namespace Common.Automation.Common.Actions.ElementsBase
 
         public string GetText(By by)
         {
-            var element = GetLocatedElement(by);
+            var element = GetElement(by);
             WaitUntilVisible(element);
             return GetText(element);
         }
 
         public string GetAttributeText(By by, string attribute)
         {
-            return GetLocatedElement(by).GetAttribute(attribute);
+            return GetElement(by).GetAttribute(attribute);
         }
 
         public string GetTextByAttribute(By by)
         {
-            return GetLocatedElement(by).GetAttribute("innerHTML");
+            return GetElement(by).GetAttribute("innerHTML");
         }
 
         public int TextToInt(string text)

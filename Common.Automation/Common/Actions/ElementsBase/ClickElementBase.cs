@@ -14,7 +14,7 @@ namespace Common.Automation.Common.Actions.ElementsBase
 
         public void JavaScriptClick(By by)
         {
-            var element = GetLocatedElement(by);
+            var element = GetElement(by);
             JavaScriptClick(element);
         }
 
@@ -27,7 +27,7 @@ namespace Common.Automation.Common.Actions.ElementsBase
 
         public void Click(By by)
         {
-            var elem = GetLocatedElement(by);
+            var elem = GetElement(by);
             Click(elem);
         }
 
@@ -39,7 +39,7 @@ namespace Common.Automation.Common.Actions.ElementsBase
 
         public void ClickAndWait(By by)
         {
-            var elem = GetLocatedElement(by);
+            var elem = GetElement(by);
             ClickAndWait(elem);
         }
 

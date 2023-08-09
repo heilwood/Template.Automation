@@ -18,7 +18,7 @@ namespace Common.Automation.Common.Actions
 
         public void SelectByOptionText(By dropdown, string valueText)
         {
-            var elem = GetLocatedElement(dropdown);
+            var elem = GetElement(dropdown);
             if (_textElementBase.GetText(elem) == valueText) return;
 
             var select = new SelectElement(elem);

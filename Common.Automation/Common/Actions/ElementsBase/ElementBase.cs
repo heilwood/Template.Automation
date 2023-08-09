@@ -13,8 +13,6 @@ namespace Common.Automation.Common.Actions.ElementsBase
     public class ElementBase
     {
         protected static IWebDriver Driver;
-        protected OpenQA.Selenium.Interactions.Actions Action;
-        public readonly WebDriverWait Wait;
         public readonly LoggerHelper LoggerHelper;
         protected readonly NetworkAdapter NetworkAdapter;
 
@@ -24,10 +22,17 @@ namespace Common.Automation.Common.Actions.ElementsBase
             NetworkAdapter = networkAdapter ?? throw new ArgumentNullException(nameof(networkAdapter));
             LoggerHelper = loggerHelper ?? throw new ArgumentNullException(nameof(loggerHelper));
             Driver = driver ?? throw new ArgumentNullException(nameof(driver));
-            Action = new OpenQA.Selenium.Interactions.Actions(driver);
-            Wait = new WebDriverWait(driver, TimeSpan.FromSeconds(ConfigManager.WaitTime));
         }
 
+        public WebDriverWait Wait(IWebDriver driver, int seconds = 15)
+        {
+            return new WebDriverWait(driver, TimeSpan.FromSeconds(seconds));
+        }
+
+        public OpenQA.Selenium.Interactions.Actions Actions(IWebDriver driver)
+        {
+            return new OpenQA.Selenium.Interactions.Actions(driver);
+        }
 
         public void ScrollIntoView(IWebElement elem)
         {
@@ -35,7 +40,7 @@ namespace Common.Automation.Common.Actions.ElementsBase
             js.ExecuteScript("arguments[0].scrollIntoView({ block: 'center' })", elem);
         }
 
-        public IWebElement GetLocatedElement(By by)
+        public IWebElement GetElement(By by)
         {
             WaitUntilElemPresent(by);
             var elem = Driver.FindElement(by);
@@ -50,10 +55,9 @@ namespace Common.Automation.Common.Actions.ElementsBase
 
         public void WaitUntilVisible(IWebElement elem, int seconds = 15)
         {
-            var wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(seconds));
             try
             {
-                wait.Until(driver => elem.Displayed);
+                Wait(Driver, seconds).Until(driver => elem.Displayed);
             }
             catch
             {
@@ -63,7 +67,7 @@ namespace Common.Automation.Common.Actions.ElementsBase
 
         public void WaitUntilVisible(By by, int seconds = 15)
         {
-            var elem = GetLocatedElement(by);
+            var elem = GetElement(by);
             WaitUntilVisible(elem, seconds);
         }
 
@@ -83,15 +87,9 @@ namespace Common.Automation.Common.Actions.ElementsBase
 
         public void WaitForPageToLoad()
         {
-            new WebDriverWait(Driver,
-                TimeSpan.FromSeconds(ConfigManager.PageLoadWaitTime))
-            {
-                Message = "page not loaded"
-            }
-                .Until(
-                    d =>
-                        ((IJavaScriptExecutor)Driver).ExecuteScript("return document.readyState").ToString()!.Equals("complete"));
-
+            Wait(Driver, ConfigManager.PageLoadWaitTime)
+                .Until(d => ((IJavaScriptExecutor)Driver)
+                    .ExecuteScript("return document.readyState").ToString()!.Equals("complete"));
         }
 
 
@@ -99,11 +97,11 @@ namespace Common.Automation.Common.Actions.ElementsBase
         {
             try
             {
-                Wait.Until(d => IsPresent(by));
+                Wait(Driver).Until(d => IsPresent(by));
             }
-            catch (Exception)
+            catch (WebDriverTimeoutException)
             {
-                throw new Exception($"Element not found with by: {by}");
+                throw new NoSuchElementException($"Element not found with by: {by}");
             }
 
         }
@@ -151,7 +149,7 @@ namespace Common.Automation.Common.Actions.ElementsBase
         {
             try
             {
-                Wait.Until(d => IsRequestFinished());
+                Wait(Driver).Until(d => IsRequestFinished());
             }
             catch (WebDriverTimeoutException)
             {
@@ -175,7 +173,7 @@ namespace Common.Automation.Common.Actions.ElementsBase
         {
             try
             {
-                Wait.Until(d => IsRespReqListsCleaned());
+                Wait(Driver).Until(d => IsRespReqListsCleaned());
             }
             catch (WebDriverTimeoutException)
             {

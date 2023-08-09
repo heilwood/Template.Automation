@@ -8,9 +8,9 @@ namespace YourProjectName.Automation.Home
     {
         private readonly HomeLocators _homeLocators;
 
-        public HomeSteps()
+        public HomeSteps(HomeLocators homeLocators)
         {
-            _homeLocators = new HomeLocators();
+            _homeLocators = homeLocators;
         }
     }
 }

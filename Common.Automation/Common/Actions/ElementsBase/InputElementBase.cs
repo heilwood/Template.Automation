@@ -13,7 +13,7 @@ namespace Common.Automation.Common.Actions.ElementsBase
 
         public void Clear(By by)
         {
-            GetLocatedElement(by).Clear();
+            GetElement(by).Clear();
         }
 
         public void ClearType(By by, string text)
@@ -24,7 +24,7 @@ namespace Common.Automation.Common.Actions.ElementsBase
 
         public void Type(By by, string text)
         {
-            GetLocatedElement(by).SendKeys(text);
+            GetElement(by).SendKeys(text);
             LoggerHelper.Log().Information($"Entered: {text}");
         }
     }
