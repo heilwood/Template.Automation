@@ -9,7 +9,7 @@ using TechTalk.SpecFlow.Tracing;
 
 namespace Common.Automation.Common.Helpers.ScreenShot
 {
-    public class ScreenShotHelper : StepBase
+    public class ScreenShotHelper
     {
         private readonly LoggerHelper _loggerHelper;
         private readonly IWebDriver _driver;
