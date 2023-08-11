@@ -6,11 +6,11 @@ using OpenQA.Selenium.Support.UI;
 
 namespace Common.Automation.Common.Actions
 {
-    public class Select : ClickElementBase
+    public class Dropdown : ClickElementBase
     {
         private readonly TextElementBase _textElementBase;
 
-        public Select(IWebDriver driver, NetworkAdapter networkAdapter, LoggerHelper loggerHelper)
+        public Dropdown(IWebDriver driver, NetworkAdapter networkAdapter, LoggerHelper loggerHelper)
             : base(driver, networkAdapter, loggerHelper)
         {
             _textElementBase = new TextElementBase(driver, networkAdapter, loggerHelper);
@@ -24,6 +24,16 @@ namespace Common.Automation.Common.Actions
             var select = new SelectElement(elem);
             select.SelectByText(valueText);
             WaitUntilAllRequestsFinished();
+        }
+
+        public void SelectByText(By button, By list, string valueText)
+        {
+            if (_textElementBase.GetText(button) == valueText) return;
+
+            Click(button);
+            WaitUntilVisible(list);
+            var element = GetChildByText(list, valueText);
+            ClickAndWait(element);
         }
     }
 }

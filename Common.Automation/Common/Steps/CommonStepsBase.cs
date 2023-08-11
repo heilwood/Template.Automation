@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using Common.Automation.Common.Locators;
+using FluentAssertions;
 using TechTalk.SpecFlow;
 
 namespace Common.Automation.Common.Steps
@@ -6,11 +7,17 @@ namespace Common.Automation.Common.Steps
     [Binding]
     public sealed class CommonStepsBase : StepBase
     {
+        private readonly CommonLocatorsBase _commonLocatorsBase;
+        public CommonStepsBase(CommonLocatorsBase commonLocatorsBase)
+        {
+            _commonLocatorsBase = commonLocatorsBase;
+        }
 
-        [Given(@"I have opened application url")]
-        public void OpenMainAppUrl()
+        [Given(@"I have opened IF insurance home page")]
+        public void OpenIfHomeUrl()
         {
             Navigation.OpenPage(ConfigManager.MainUrl);
+            Button.Click(_commonLocatorsBase.CookiesAcceptButton);
         }
 
 
@@ -36,7 +43,5 @@ namespace Common.Automation.Common.Steps
         {
             Navigation.NavigateBack();
         }
-
-      
     }
 }

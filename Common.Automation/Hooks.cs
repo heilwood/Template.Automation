@@ -18,18 +18,20 @@ namespace Common.Automation
 
         protected Hooks() {
             Enum.TryParse(ConfigManager.BrowserName, out _browser);
-            _browserFactory = new BrowserFactory();
+            _browserFactory = AutofacConfig.Resolve<BrowserFactory>();
         }
 
 
         [BeforeScenario]
         public void BeforeScenario()
         {
-            //_driver = _browserFactory.RemoteDriver(_browser, "http://10.162.113.68:4443/wd/hub");
+#if REMOTE
+            _driver = _browserFactory.RemoteDriver(_browser, "http://10.162.113.68:4443/wd/hub");
+#else
             _driver = _browserFactory.LocalDriver(_browser);
+#endif
             _driver.Manage().Window.Maximize();
             AutofacConfig.RegisterDriver(_driver);
-            //DriverHolder.Init(_driver);
         }
 
         [AfterScenario]
@@ -42,7 +44,6 @@ namespace Common.Automation
             }
 
             _driver?.Quit();
-            //DriverHolder.Utilize();
             AutofacConfig.DisposeCurrentScope();
         }
     }

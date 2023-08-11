@@ -1,7 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 
-namespace Common.Automation.Common.Browser
+namespace Common.Automation.Common.Browser.Settings
 {
     public class FirefoxSettings : IBrowserSettings
     {

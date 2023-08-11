@@ -11,7 +11,6 @@ namespace Common.Automation.Common.Actions.ElementsBase
         {
         }
 
-
         public void JavaScriptClick(By by)
         {
             var element = GetElement(by);

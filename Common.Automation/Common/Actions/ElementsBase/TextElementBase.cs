@@ -70,8 +70,8 @@ namespace Common.Automation.Common.Actions.ElementsBase
 
         public void TextShouldContainIgnoreCase(By by, string text)
         {
-            var actual = GetText(by).ToLower();
-            actual.Should().Contain(text.ToLower());
+            var actual = GetText(by);
+            actual.Should().ContainEquivalentOf(text);
         }
 
         public void TextShouldNotBeEmpty(By by)

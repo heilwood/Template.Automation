@@ -7,10 +7,6 @@ namespace Common.Automation.Common.Steps.StepsTransformation
     [Binding]
     public class CommonStepsTransformation
     {
-        public CommonStepsTransformation()
-        {
-        }
-
         [StepArgumentTransformation]
         public bool StringToBoolean(string condition)
         {

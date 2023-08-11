@@ -1,7 +1,8 @@
 ﻿using Autofac;
 using Common.Automation.Common;
 using Common.Automation.Common.Actions;
-using Common.Automation.Common.Actions.ElementsBase;
+using Common.Automation.Common.Browser;
+using Common.Automation.Common.Browser.Settings;
 using Common.Automation.Common.Helpers;
 using Common.Automation.Common.Helpers.DevTools;
 using Common.Automation.Common.Helpers.ScreenShot;
@@ -11,7 +12,7 @@ namespace Common.Automation
 {
     public static class AutofacConfig
     {
-        private static IContainer _defaultContainer;
+        private static readonly IContainer DefaultContainer;
         private static ILifetimeScope _currentScope;
 
         static AutofacConfig()
@@ -21,14 +22,14 @@ namespace Common.Automation
             RegisterDevToolsSession(builder);
             RegisterAdapters(builder);
             RegisterHelpers(builder);
+            RegisterBrowserComponents(builder);
             RegisterElements(builder);
-            _defaultContainer = builder.Build();
+            DefaultContainer = builder.Build();
         }
 
         public static T Resolve<T>()
         {
-            if (_currentScope == null)
-                _currentScope = _defaultContainer.BeginLifetimeScope();
+            _currentScope ??= DefaultContainer.BeginLifetimeScope();
 
             return _currentScope.Resolve<T>();
         }
@@ -37,7 +38,7 @@ namespace Common.Automation
         {
             _currentScope?.Dispose();
 
-            _currentScope = _defaultContainer.BeginLifetimeScope(b =>
+            _currentScope = DefaultContainer.BeginLifetimeScope(b =>
             {
                 b.RegisterInstance(driver).As<IWebDriver>().SingleInstance();
             });
@@ -66,6 +67,15 @@ namespace Common.Automation
             builder.RegisterType<ScreenShotHelper>().InstancePerDependency();
         }
 
+        private static void RegisterBrowserComponents(ContainerBuilder builder)
+        {
+            builder.RegisterType<ChromeSettings>().SingleInstance();
+            builder.RegisterType<FirefoxSettings>().SingleInstance();
+            builder.RegisterType<BrowserSettingsProvider>().As<IBrowserSettingsProvider>().SingleInstance();
+            builder.RegisterType<BrowserFactory>().SingleInstance();
+        }
+
+
         private static void RegisterElements(ContainerBuilder builder)
         {
             builder.RegisterType<Button>().InstancePerDependency();
@@ -73,7 +83,7 @@ namespace Common.Automation
             builder.RegisterType<DatePicker>().InstancePerDependency();
             builder.RegisterType<Div>().InstancePerDependency();
             builder.RegisterType<Input>().InstancePerDependency();
-            builder.RegisterType<Select>().InstancePerDependency();
+            builder.RegisterType<Dropdown>().InstancePerDependency();
             builder.RegisterType<TextElement>().InstancePerDependency();
             builder.RegisterType<Href>().InstancePerDependency();
             builder.RegisterType<Radio>().InstancePerDependency();

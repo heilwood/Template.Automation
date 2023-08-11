@@ -1,7 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
-namespace Common.Automation.Common.Browser
+namespace Common.Automation.Common.Browser.Settings
 {
     public class ChromeSettings : IBrowserSettings
     {

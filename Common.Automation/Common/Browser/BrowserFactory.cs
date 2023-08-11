@@ -1,62 +1,42 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using Common.Automation.Common.Browser.Settings;
+using Common.Automation.Exceptions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Remote;
 
+
 namespace Common.Automation.Common.Browser
 {
     public class BrowserFactory
     {
-        private readonly ChromeSettings _chromeSettings;
-        private readonly FirefoxSettings _firefoxSettings;
+        private readonly IBrowserSettingsProvider _settingsProvider;
+        private readonly string _assemblyDirectory;
 
-        public BrowserFactory()
+        public BrowserFactory(IBrowserSettingsProvider settingsProvider)
         {
-            _chromeSettings = new ChromeSettings();
-            _firefoxSettings = new FirefoxSettings();
+            _settingsProvider = settingsProvider ?? throw new ArgumentNullException(nameof(settingsProvider));
+            _assemblyDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         }
 
         public IWebDriver LocalDriver(BrowserName browser)
         {
-            var options = GetLocalBrowserSettings(browser).GetBrowserSettings();
-            switch (browser)
+            var options = _settingsProvider.GetBrowserSettings(browser).GetBrowserSettings();
+            return browser switch
             {
-                case BrowserName.Firefox:
-                    return new FirefoxDriver((FirefoxOptions) options);
-                case BrowserName.Chrome:
-                    var ass = Assembly.GetExecutingAssembly();
-                    var path = Path.GetDirectoryName(ass.Location);
-                    return new ChromeDriver(path, (ChromeOptions) options);
-            }
-            throw new Exception($"Unknown browser name {browser}");
+                BrowserName.Firefox => new FirefoxDriver((FirefoxOptions)options),
+                BrowserName.Chrome => new ChromeDriver(_assemblyDirectory, (ChromeOptions)options),
+                _ => throw new UnsupportedBrowserException($"Unknown browser name {browser}")
+            };
         }
 
         public IWebDriver RemoteDriver(BrowserName browser, string serverUrl)
         {
-            var cap = GetRemoteBrowseSettings(browser);
-            var driver = new RemoteWebDriver(new Uri(serverUrl), cap);
-            return driver;
-        }
-
-        private IBrowserSettings GetLocalBrowserSettings(BrowserName browser)
-        {
-            switch (browser)
-            {
-                case BrowserName.Firefox:
-                    return _firefoxSettings;
-                case BrowserName.Chrome:
-                    return _chromeSettings;
-            }
-            throw new Exception($"Unknown browser name {browser}");
-        }
-
-        public ICapabilities GetRemoteBrowseSettings(BrowserName browser)
-        {
-            var cap = GetLocalBrowserSettings(browser);
-            return cap.GetBrowserSettings().ToCapabilities();
+            var cap = _settingsProvider.GetRemoteBrowserSettings(browser);
+            return new RemoteWebDriver(new Uri(serverUrl), cap);
         }
     }
 }

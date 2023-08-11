@@ -27,5 +27,12 @@ namespace Common.Automation.Common.Actions.ElementsBase
             GetElement(by).SendKeys(text);
             LoggerHelper.Log().Information($"Entered: {text}");
         }
+
+        public void ManualType(By by, string text)
+        {
+            var elem = GetElement(by);
+            Actions(Driver).SendKeys(elem, text).Perform();
+        }
     }
 }
+ 

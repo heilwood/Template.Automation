@@ -9,7 +9,7 @@ namespace Common.Automation.Common
         public DatePicker DatePicker => AutofacConfig.Resolve<DatePicker>();
         public Div Div => AutofacConfig.Resolve<Div>();
         public Input Input => AutofacConfig.Resolve<Input>();
-        public Select Select => AutofacConfig.Resolve<Select>();
+        public Dropdown Dropdown => AutofacConfig.Resolve<Dropdown>();
         public TextElement TextElement => AutofacConfig.Resolve<TextElement>();
         public Href Href => AutofacConfig.Resolve<Href>();
         public Radio Radio => AutofacConfig.Resolve<Radio>();

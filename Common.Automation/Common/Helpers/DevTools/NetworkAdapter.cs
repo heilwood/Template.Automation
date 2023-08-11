@@ -13,7 +13,7 @@ namespace Common.Automation.Common.Helpers.DevTools
 
         public bool SkipUrlContains(string url)
         {
-            var urlsToSkips = new List<string> { "google" };
+            var urlsToSkips = new List<string> { "google", "bing" };
             return urlsToSkips.Any(url.Contains);
         }
 

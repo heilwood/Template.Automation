@@ -5,11 +5,19 @@ using OpenQA.Selenium;
 
 namespace Common.Automation.Common.Actions
 {
-    public class DatePicker : InputElementBase
+    public class DatePicker : ClickElementBase
     {
         public DatePicker(IWebDriver driver, NetworkAdapter networkAdapter, LoggerHelper loggerHelper)
             : base(driver, networkAdapter, loggerHelper)
         {
+        }
+
+        public void SelectCurrentMonthDay(By datePickerIcon, By day)
+        {
+            var icon = GetElement(datePickerIcon);
+            ClickAndWait(icon);
+            var dayToSelect = GetElement(day);
+            Click(dayToSelect);
         }
     }
 }

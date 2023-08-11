@@ -3,6 +3,6 @@
     public class ConfigManager
     {
         public static string BrowserName = "Chrome";
-        public static string MainUrl = "https://www.google.com";
+        public static string MainUrl = "https://www.if.lv";
     }
 }
