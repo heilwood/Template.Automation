@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using Common.Automation.Common;
-using Common.Automation.Common.Actions;
+﻿using Common.Automation.Common;
+using Common.Automation.Common.Actions.ElementsBase;
 using TechTalk.SpecFlow;
 
 namespace YourProjectName.Automation.Pages.Home.Pet_Insurance
@@ -28,6 +23,7 @@ namespace YourProjectName.Automation.Pages.Home.Pet_Insurance
         public void SelectBreed(string breed)
         {
             var value = Button.ByChildContainsTxt(breed);
+            Dropdown.Click(_petInsuranceLocators.BreedInput);
             Input.ManualType(_petInsuranceLocators.BreedInput, breed);
             Button.Click(value);
         }

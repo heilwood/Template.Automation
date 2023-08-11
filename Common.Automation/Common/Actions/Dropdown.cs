@@ -10,7 +10,7 @@ namespace Common.Automation.Common.Actions
     {
         private readonly TextElementBase _textElementBase;
 
-        public Dropdown(IWebDriver driver, NetworkAdapter networkAdapter, LoggerHelper loggerHelper)
+        public Dropdown(IWebDriver driver, NetworkAdapterHelper networkAdapter, LoggerHelper loggerHelper)
             : base(driver, networkAdapter, loggerHelper)
         {
             _textElementBase = new TextElementBase(driver, networkAdapter, loggerHelper);
@@ -26,13 +26,13 @@ namespace Common.Automation.Common.Actions
             WaitUntilAllRequestsFinished();
         }
 
-        public void SelectByText(By button, By list, string valueText)
+        public void SelectByText(By button, By valuesList, string valueText)
         {
             if (_textElementBase.GetText(button) == valueText) return;
 
             Click(button);
-            WaitUntilVisible(list);
-            var element = GetChildByText(list, valueText);
+            WaitUntilVisible(valuesList);
+            var element = GetChildByText(valuesList, valueText);
             ClickAndWait(element);
         }
     }

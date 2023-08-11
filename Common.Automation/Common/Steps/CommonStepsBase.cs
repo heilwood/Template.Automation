@@ -16,7 +16,7 @@ namespace Common.Automation.Common.Steps
         [Given(@"I have opened IF insurance home page")]
         public void OpenIfHomeUrl()
         {
-            Navigation.OpenPage(ConfigManager.MainUrl);
+            Navigation.OpenPageAsync(ConfigManager.MainUrl).GetAwaiter().GetResult();
             Button.Click(_commonLocatorsBase.CookiesAcceptButton);
         }
 

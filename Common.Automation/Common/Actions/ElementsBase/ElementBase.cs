@@ -14,10 +14,10 @@ namespace Common.Automation.Common.Actions.ElementsBase
     {
         protected IWebDriver Driver;
         protected readonly LoggerHelper LoggerHelper;
-        protected readonly NetworkAdapter NetworkAdapter;
+        protected readonly NetworkAdapterHelper NetworkAdapter;
 
 
-        public ElementBase(IWebDriver driver, NetworkAdapter networkAdapter, LoggerHelper loggerHelper)
+        public ElementBase(IWebDriver driver, NetworkAdapterHelper networkAdapter, LoggerHelper loggerHelper)
         {
             NetworkAdapter = networkAdapter ?? throw new ArgumentNullException(nameof(networkAdapter));
             LoggerHelper = loggerHelper ?? throw new ArgumentNullException(nameof(loggerHelper));

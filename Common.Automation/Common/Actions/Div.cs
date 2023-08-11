@@ -7,7 +7,7 @@ namespace Common.Automation.Common.Actions
 {
     public class Div : TextElementBase
     {
-        public Div(IWebDriver driver, NetworkAdapter networkAdapter, LoggerHelper loggerHelper)
+        public Div(IWebDriver driver, NetworkAdapterHelper networkAdapter, LoggerHelper loggerHelper)
             : base(driver, networkAdapter, loggerHelper)
         {
         }

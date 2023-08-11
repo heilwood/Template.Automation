@@ -7,7 +7,7 @@ namespace Common.Automation.Common.Actions
 {
     public class Href : ClickElementBase
     {
-        public Href(IWebDriver driver, NetworkAdapter networkAdapter, LoggerHelper loggerHelper)
+        public Href(IWebDriver driver, NetworkAdapterHelper networkAdapter, LoggerHelper loggerHelper)
             : base(driver, networkAdapter, loggerHelper)
         {
         }

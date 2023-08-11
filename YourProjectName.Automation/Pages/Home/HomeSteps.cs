@@ -1,6 +1,5 @@
 ﻿using Common.Automation.Common;
 using TechTalk.SpecFlow;
-using YourProjectName.Automation.Home;
 
 namespace YourProjectName.Automation.Pages.Home
 {
@@ -21,6 +20,5 @@ namespace YourProjectName.Automation.Pages.Home
             var dropdownList = _homeLocators.CategoryDropdownValuesList(categoryName);
             Dropdown.SelectByText(dropdownButton, dropdownList, value);
         }
-
     }
 }

@@ -57,7 +57,8 @@ namespace Common.Automation
             builder.Register(c =>
             {
                 var sessionManager = c.Resolve<IDevToolsSessionManager>();
-                return new NetworkAdapter(sessionManager);
+                var logger = c.Resolve<LoggerHelper>();
+                return new NetworkAdapterHelper(sessionManager, logger);
             }).SingleInstance();
         }
 

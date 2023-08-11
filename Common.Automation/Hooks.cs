@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using Common.Automation.Common;
 using Common.Automation.Common.Browser;
 using Common.Automation.Common.Helpers.ScreenShot;
 using OpenQA.Selenium;
@@ -12,7 +10,6 @@ namespace Common.Automation
     public class Hooks
     {
         private IWebDriver _driver;
-        private ScreenShotHelper _screenShotHelper;
         private readonly BrowserName _browser;
         private readonly BrowserFactory _browserFactory;
 
@@ -39,8 +36,8 @@ namespace Common.Automation
         {
             if (ScenarioContext.Current.TestError != null)
             {
-                _screenShotHelper = AutofacConfig.Resolve<ScreenShotHelper>();
-                _screenShotHelper.CurrentViewScreenShot();
+                var screenShotHelper = AutofacConfig.Resolve<ScreenShotHelper>();
+                screenShotHelper.CurrentViewScreenShot();
             }
 
             _driver?.Quit();

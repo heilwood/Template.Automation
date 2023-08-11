@@ -6,7 +6,7 @@ namespace Common.Automation.Common.Actions.ElementsBase
 {
     public class ClickElementBase : ElementBase
     {
-        public ClickElementBase(IWebDriver driver, NetworkAdapter networkAdapter, LoggerHelper loggerHelper)
+        public ClickElementBase(IWebDriver driver, NetworkAdapterHelper networkAdapter, LoggerHelper loggerHelper)
             : base(driver, networkAdapter, loggerHelper)
         {
         }

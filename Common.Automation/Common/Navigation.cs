@@ -1,7 +1,9 @@
-﻿using Common.Automation.Common.Actions.ElementsBase;
+﻿using System.Threading.Tasks;
+using Common.Automation.Common.Actions.ElementsBase;
 using Common.Automation.Common.Helpers;
 using Common.Automation.Common.Helpers.DevTools;
 using OpenQA.Selenium;
+
 
 namespace Common.Automation.Common
 {
@@ -10,18 +12,23 @@ namespace Common.Automation.Common
     {
         public IDevToolsSessionManager DevToolsSessionManager { get; set; }
 
-        public Navigation(IWebDriver driver, NetworkAdapter networkAdapter, LoggerHelper loggerHelper)
+        public Navigation(IWebDriver driver, NetworkAdapterHelper networkAdapter, LoggerHelper loggerHelper)
             : base(driver, networkAdapter, loggerHelper)
         {
         }
 
-        public void OpenPage(string url)
+        public async Task OpenPageAsync(string url)
         {
-            Driver.Url = url;
-            DevToolsSessionManager.SetDevSession(Driver);
-            NetworkAdapter.ListenRequests();
-            NetworkAdapter.ListenLoadingFinished();
-            NetworkAdapter.ListenLoadingFailed();
+            var navigateTask = Task.Run(() => Driver.Url = url);
+            var setDevSessionTask = Task.Run(() => DevToolsSessionManager.SetDevSession(Driver));
+
+            await Task.WhenAll(navigateTask, setDevSessionTask);
+
+            var listenRequestsTask = Task.Run(() => NetworkAdapter.ListenRequests());
+            var listenLoadingFinishedTask = Task.Run(() => NetworkAdapter.ListenLoadingFinished());
+            var listenLoadingFailedTask = Task.Run(() => NetworkAdapter.ListenLoadingFailed());
+
+            await Task.WhenAll(listenRequestsTask, listenLoadingFinishedTask, listenLoadingFailedTask);
 
             WaitForPageToLoad();
 
