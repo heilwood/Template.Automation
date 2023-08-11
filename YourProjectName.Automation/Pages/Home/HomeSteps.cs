@@ -1,4 +1,6 @@
-﻿using Common.Automation.Common;
+﻿using Common.Automation;
+using Common.Automation.Common;
+using Common.Automation.Common.Locators;
 using TechTalk.SpecFlow;
 
 namespace YourProjectName.Automation.Pages.Home
@@ -7,10 +9,19 @@ namespace YourProjectName.Automation.Pages.Home
     public sealed class HomeSteps : StepBase
     {
         private readonly HomeLocators _homeLocators;
+        private readonly CommonLocatorsBase _commonLocatorsBase;
 
-        public HomeSteps(HomeLocators homeLocators)
+        public HomeSteps(HomeLocators homeLocators, CommonLocatorsBase commonLocatorsBase)
         {
             _homeLocators = homeLocators;
+            _commonLocatorsBase = commonLocatorsBase;
+        }
+
+        [Given(@"I have opened IF insurance home page")]
+        public void OpenIfHomeUrl()
+        {
+            Navigation.OpenPageAsync(ConfigManager.MainUrl).GetAwaiter().GetResult();
+            Button.Click(_commonLocatorsBase.AcceptCookiesButton);
         }
 
         [Given(@"I have selected '(.*)' from category '(.*)'")]

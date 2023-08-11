@@ -7,20 +7,6 @@ namespace Common.Automation.Common.Steps
     [Binding]
     public sealed class CommonStepsBase : StepBase
     {
-        private readonly CommonLocatorsBase _commonLocatorsBase;
-        public CommonStepsBase(CommonLocatorsBase commonLocatorsBase)
-        {
-            _commonLocatorsBase = commonLocatorsBase;
-        }
-
-        [Given(@"I have opened IF insurance home page")]
-        public void OpenIfHomeUrl()
-        {
-            Navigation.OpenPageAsync(ConfigManager.MainUrl).GetAwaiter().GetResult();
-            Button.Click(_commonLocatorsBase.CookiesAcceptButton);
-        }
-
-
         [When(@"I Refresh the page")]
         [Given(@"I have Refreshed the page")]
         public void RefreshPage()

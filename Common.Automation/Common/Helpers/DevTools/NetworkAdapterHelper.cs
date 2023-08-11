@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenQA.Selenium.DevTools.V114;
 using OpenQA.Selenium.DevTools.V114.Network;
@@ -8,7 +9,7 @@ namespace Common.Automation.Common.Helpers.DevTools
     public class NetworkAdapterHelper
     {
         private readonly Dictionary<string, string> _stuckRequests = new Dictionary<string, string>();
-        private readonly List<string> _urLsToSkip = new List<string> { "google", "bing" };
+        private readonly List<string> _urLsToSkip = new List<string> { "google", "bing", "giosg" };
         private HashSet<string> _pendingRequestIds = new HashSet<string>();
         private readonly IDevToolsSessionManager _devToolsSessionManager;
         private readonly object _lockObject = new object();
@@ -22,6 +23,7 @@ namespace Common.Automation.Common.Helpers.DevTools
             _devToolsSessionManager = devToolsSessionManager;
             _loggerHelper = loggerHelper;
         }
+
         public bool ShouldSkipUrl(string url)
         {
             return _urLsToSkip.Any(url.Contains);

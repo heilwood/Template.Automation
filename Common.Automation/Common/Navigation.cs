@@ -19,21 +19,35 @@ namespace Common.Automation.Common
 
         public async Task OpenPageAsync(string url)
         {
-            var navigateTask = Task.Run(() => Driver.Url = url);
-            var setDevSessionTask = Task.Run(() => DevToolsSessionManager.SetDevSession(Driver));
+            var navigateTask = NavigateToUrl(url);
+            var setupDevToolsTask = SetupDevToolsSession();
+            await Task.WhenAll(navigateTask, setupDevToolsTask);
 
-            await Task.WhenAll(navigateTask, setDevSessionTask);
+            await ListenToNetworkEvents();
 
+            WaitForPageToLoad();
+            WaitUntilReqRespListsCleaned();
+
+            LoggerHelper.Log().Information($"Url name: {url}");
+        }
+
+        private Task NavigateToUrl(string url)
+        {
+            return Task.Run(() => Driver.Url = url);
+        }
+
+        private Task SetupDevToolsSession()
+        {
+            return Task.Run(() => DevToolsSessionManager.SetDevSession(Driver));
+        }
+
+        private async Task ListenToNetworkEvents()
+        {
             var listenRequestsTask = Task.Run(() => NetworkAdapter.ListenRequests());
             var listenLoadingFinishedTask = Task.Run(() => NetworkAdapter.ListenLoadingFinished());
             var listenLoadingFailedTask = Task.Run(() => NetworkAdapter.ListenLoadingFailed());
 
             await Task.WhenAll(listenRequestsTask, listenLoadingFinishedTask, listenLoadingFailedTask);
-
-            WaitForPageToLoad();
-
-            WaitUntilReqRespListsCleaned();
-            LoggerHelper.Log().Information($"Url name: {url}");
         }
 
         public void Refresh()

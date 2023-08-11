@@ -4,6 +4,6 @@ namespace Common.Automation.Common.Locators
 {
     public class CommonLocatorsBase
     {
-        public By CookiesAcceptButton = By.CssSelector("button#onetrust-accept-btn-handler");
+        public By AcceptCookiesButton = By.CssSelector("button#onetrust-accept-btn-handler");
     }
 }
