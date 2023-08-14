@@ -11,5 +11,10 @@ namespace Common.Automation.Common.Actions
             : base(driver, networkAdapter, loggerHelper)
         {
         }
+
+        public string GetCurrentUrl()
+        {
+            return Driver.Url;
+        }
     }
 }

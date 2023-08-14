@@ -86,7 +86,7 @@ namespace Common.Automation
             builder.RegisterType<Input>().InstancePerDependency();
             builder.RegisterType<Dropdown>().InstancePerDependency();
             builder.RegisterType<TextElement>().InstancePerDependency();
-            builder.RegisterType<Href>().InstancePerDependency();
+            builder.RegisterType<A>().InstancePerDependency();
             builder.RegisterType<Radio>().InstancePerDependency();
             builder.RegisterType<Window>().InstancePerDependency();
             builder.RegisterType<Navigation>().InstancePerDependency().PropertiesAutowired();

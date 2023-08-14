@@ -5,16 +5,17 @@ using OpenQA.Selenium;
 
 namespace Common.Automation.Common.Actions
 {
-    public class Href : ClickElementBase
+    public class A : TextElementBase
     {
-        public Href(IWebDriver driver, NetworkAdapterHelper networkAdapter, LoggerHelper loggerHelper)
+        public A(IWebDriver driver, NetworkAdapterHelper networkAdapter, LoggerHelper loggerHelper)
             : base(driver, networkAdapter, loggerHelper)
         {
         }
 
-        public string GetCurrentUrl()
+        public string Href(By by)
         {
-            return Driver.Url;
+            return GetAttributeText(by, "href");
         }
+
     }
 }

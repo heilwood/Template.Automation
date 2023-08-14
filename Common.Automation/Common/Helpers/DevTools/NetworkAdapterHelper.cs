@@ -9,13 +9,14 @@ namespace Common.Automation.Common.Helpers.DevTools
     public class NetworkAdapterHelper
     {
         private readonly Dictionary<string, string> _stuckRequests = new Dictionary<string, string>();
-        private readonly List<string> _urLsToSkip = new List<string> { "google", "bing", "giosg" };
+        private readonly List<string> _urLsToSkip = new List<string> { "google", "bing", "giosg", "data.microsoft" };
         private HashSet<string> _pendingRequestIds = new HashSet<string>();
         private readonly IDevToolsSessionManager _devToolsSessionManager;
-        private readonly object _lockObject = new object();
+
         private readonly LoggerHelper _loggerHelper;
         private volatile NetworkAdapter _networkAdapter;
         private const int MaxRequestIdLength = 20;
+        private readonly object _lockObject = new object();
 
 
         public NetworkAdapterHelper(IDevToolsSessionManager devToolsSessionManager, LoggerHelper loggerHelper)
@@ -40,6 +41,26 @@ namespace Common.Automation.Common.Helpers.DevTools
             }
 
             return _networkAdapter;
+        }
+
+        public void ListenRequests()
+        {
+
+            var networkAdapter = GetNetworkAdapter();
+
+            void RequestEvent(object sender, RequestWillBeSentEventArgs e)
+            {
+                if (ShouldSkipUrl(e.Request.Url)) return;
+
+                lock (_lockObject)
+                {
+                    if (e.RequestId.Length >= MaxRequestIdLength) return;
+                    _stuckRequests[e.RequestId] = e.Request.Url;
+                    _pendingRequestIds.Add(e.RequestId);
+                }
+            }
+
+            networkAdapter.RequestWillBeSent += RequestEvent;
         }
 
         public void ListenLoadingFinished()
@@ -74,25 +95,6 @@ namespace Common.Automation.Common.Helpers.DevTools
             networkAdapter.LoadingFailed += LoadingFailedEvent;
         }
 
-        public void ListenRequests()
-        {
-
-            var networkAdapter = GetNetworkAdapter();
-
-            void RequestEvent(object sender, RequestWillBeSentEventArgs e)
-            {
-                if (ShouldSkipUrl(e.Request.Url)) return;
-
-                lock (_lockObject)
-                {
-                    if (e.RequestId.Length >= MaxRequestIdLength) return;
-                    _stuckRequests[e.RequestId] = e.Request.Url;
-                    _pendingRequestIds.Add(e.RequestId);
-                }
-            }
-            
-            networkAdapter.RequestWillBeSent += RequestEvent;
-        }
 
         public HashSet<string> GetPendingRequests()
         {

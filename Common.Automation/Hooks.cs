@@ -23,7 +23,7 @@ namespace Common.Automation
         public void BeforeScenario()
         {
 #if REMOTE
-            _driver = _browserFactory.RemoteDriver(_browser, "http://10.162.113.68:4443/wd/hub");
+            _driver = _browserFactory.RemoteDriver(_browser, ConfigManager.SeleniumHubUrl);
 #else
             _driver = _browserFactory.LocalDriver(_browser);
 #endif

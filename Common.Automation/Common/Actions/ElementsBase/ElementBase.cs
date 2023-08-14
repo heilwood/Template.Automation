@@ -16,7 +16,6 @@ namespace Common.Automation.Common.Actions.ElementsBase
         protected readonly LoggerHelper LoggerHelper;
         protected readonly NetworkAdapterHelper NetworkAdapter;
 
-
         public ElementBase(IWebDriver driver, NetworkAdapterHelper networkAdapter, LoggerHelper loggerHelper)
         {
             NetworkAdapter = networkAdapter ?? throw new ArgumentNullException(nameof(networkAdapter));
@@ -124,11 +123,8 @@ namespace Common.Automation.Common.Actions.ElementsBase
             {
                 lock (pendingReqIds)
                 {
-                    if (!pendingReqIds.Any())
-                    {
-                        Thread.Sleep(500);
-                        if (!pendingReqIds.Any()) return true;
-                    }
+                    //TODO: Check on automati MO and OpenPages
+                    if (!pendingReqIds.Any()) return true;
                 }
 
                 if (stopwatch.Elapsed > timeout) return false;

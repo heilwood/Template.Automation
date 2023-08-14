@@ -11,7 +11,7 @@ namespace Common.Automation.Common
         public Input Input => AutofacConfig.Resolve<Input>();
         public Dropdown Dropdown => AutofacConfig.Resolve<Dropdown>();
         public TextElement TextElement => AutofacConfig.Resolve<TextElement>();
-        public Href Href => AutofacConfig.Resolve<Href>();
+        public A A => AutofacConfig.Resolve<A>();
         public Radio Radio => AutofacConfig.Resolve<Radio>();
         public Window Window => AutofacConfig.Resolve<Window>();
         public Navigation Navigation => AutofacConfig.Resolve<Navigation>();
