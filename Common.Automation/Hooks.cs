@@ -11,11 +11,13 @@ namespace Common.Automation
     {
         private IWebDriver _driver;
         private readonly BrowserName _browser;
-        private readonly BrowserFactory _browserFactory;
+        private BrowserFactory _browserFactory;
+        private readonly ScenarioContext _scenarioContext;
 
-        protected Hooks() {
+        protected Hooks(ScenarioContext scenarioContext) {
             Enum.TryParse(ConfigManager.BrowserName, out _browser);
             _browserFactory = AutofacConfig.Resolve<BrowserFactory>();
+            _scenarioContext = scenarioContext;
         }
 
 
@@ -28,20 +30,19 @@ namespace Common.Automation
             _driver = _browserFactory.LocalDriver(_browser);
 #endif
             _driver.Manage().Window.Maximize();
-            AutofacConfig.RegisterDriver(_driver);
+            AutofacConfig.InitializeTestSession(_driver, _scenarioContext);
         }
 
         [AfterScenario]
         public void AfterScenario()
         {
-            if (ScenarioContext.Current.TestError != null)
+            if (_scenarioContext != null)
             {
                 var screenShotHelper = AutofacConfig.Resolve<ScreenShotHelper>();
                 screenShotHelper.CurrentViewScreenShot();
             }
 
             _driver?.Quit();
-            AutofacConfig.DisposeCurrentScope();
         }
     }
 }

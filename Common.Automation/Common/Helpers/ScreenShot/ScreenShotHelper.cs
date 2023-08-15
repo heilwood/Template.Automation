@@ -13,11 +13,13 @@ namespace Common.Automation.Common.Helpers.ScreenShot
     {
         private readonly LoggerHelper _loggerHelper;
         private readonly IWebDriver _driver;
+        private readonly ScenarioContext _scenarioContext;
 
-        public ScreenShotHelper(IWebDriver driver, LoggerHelper loggerHelper)
+        public ScreenShotHelper(IWebDriver driver, LoggerHelper loggerHelper, ScenarioContext scenarioContext)
         {
             _loggerHelper = loggerHelper;
             _driver = driver;
+            _scenarioContext = scenarioContext;
         }
 
         public string GetFullImagePath()
@@ -37,8 +39,8 @@ namespace Common.Automation.Common.Helpers.ScreenShot
 
         public virtual string GetScreenShotName()
         {
-            var fileNameBase = ScenarioContext.Current.ScenarioInfo.Title.ToIdentifier();
-            var argsTable = (ArrayList)ScenarioContext.Current.ScenarioInfo.Arguments.Values.SyncRoot;
+            var fileNameBase = _scenarioContext.ScenarioInfo.Title.ToIdentifier();
+            var argsTable = (ArrayList)_scenarioContext.ScenarioInfo.Arguments.Values.SyncRoot;
             var argsList = argsTable.ToArray().Select(o => (DictionaryEntry)o)
                 .Select(d => d.Value).ToList();
 

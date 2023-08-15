@@ -9,7 +9,7 @@ namespace Common.Automation.Common.Helpers.DevTools
     public class NetworkAdapterHelper
     {
         private readonly Dictionary<string, string> _stuckRequests = new Dictionary<string, string>();
-        private readonly List<string> _urLsToSkip = new List<string> { "google", "bing", "giosg", "data.microsoft" };
+        private readonly List<string> _urLsToSkip = new List<string> { ".ads.", "analytics", "google", "bing", "giosg", "data.microsoft" };
         private HashSet<string> _pendingRequestIds = new HashSet<string>();
         private readonly IDevToolsSessionManager _devToolsSessionManager;
 

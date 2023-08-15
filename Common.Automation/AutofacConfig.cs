@@ -1,46 +1,61 @@
 ﻿using Autofac;
 using Common.Automation.Common;
 using Common.Automation.Common.Actions;
-using Common.Automation.Common.Browser;
 using Common.Automation.Common.Browser.Settings;
-using Common.Automation.Common.Helpers;
+using Common.Automation.Common.Browser;
 using Common.Automation.Common.Helpers.DevTools;
 using Common.Automation.Common.Helpers.ScreenShot;
+using Common.Automation.Common.Helpers;
 using OpenQA.Selenium;
+using System.Threading;
+using TechTalk.SpecFlow;
+using System;
 
 namespace Common.Automation
 {
     public static class AutofacConfig
     {
         private static readonly IContainer DefaultContainer;
-        private static ILifetimeScope _currentScope;
+        private static readonly ThreadLocal<ILifetimeScope> _mainScope = new ThreadLocal<ILifetimeScope>(() => DefaultContainer.BeginLifetimeScope());
 
         static AutofacConfig()
         {
             var builder = new ContainerBuilder();
 
+            RegisterHelpers(builder);
             RegisterDevToolsSession(builder);
             RegisterAdapters(builder);
-            RegisterHelpers(builder);
             RegisterBrowserComponents(builder);
             RegisterElements(builder);
+
             DefaultContainer = builder.Build();
         }
 
         public static T Resolve<T>()
         {
-            _currentScope ??= DefaultContainer.BeginLifetimeScope();
+            try
+            {
+                if (_mainScope.Value == null)
+                {
+                    throw new InvalidOperationException($"Main scope is null while trying to resolve type {typeof(T).FullName}");
+                }
 
-            return _currentScope.Resolve<T>();
+                return _mainScope.Value.Resolve<T>();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to resolve type {typeof(T).FullName}", ex);
+            }
         }
 
-        public static void RegisterDriver(IWebDriver driver)
+        public static void InitializeTestSession(IWebDriver driver, ScenarioContext scenarioContext)
         {
-            _currentScope?.Dispose();
+            _mainScope.Value?.Dispose();
 
-            _currentScope = DefaultContainer.BeginLifetimeScope(b =>
+            _mainScope.Value = DefaultContainer.BeginLifetimeScope(b =>
             {
                 b.RegisterInstance(driver).As<IWebDriver>().SingleInstance();
+                b.RegisterInstance(scenarioContext).As<ScenarioContext>().SingleInstance();
             });
         }
 
@@ -76,7 +91,6 @@ namespace Common.Automation
             builder.RegisterType<BrowserFactory>().SingleInstance();
         }
 
-
         private static void RegisterElements(ContainerBuilder builder)
         {
             builder.RegisterType<Button>().InstancePerDependency();
@@ -95,8 +109,8 @@ namespace Common.Automation
 
         public static void DisposeCurrentScope()
         {
-            _currentScope?.Dispose();
-            _currentScope = null;
+            _mainScope.Value?.Dispose();
+            _mainScope.Value = null;
         }
     }
 }
