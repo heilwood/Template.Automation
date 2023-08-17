@@ -1,4 +1,6 @@
 ﻿using Common.Automation.Common;
+using Common.Automation.Common.Helpers.DataManager;
+using Common.Automation.Common.TestData;
 using TechTalk.SpecFlow;
 
 namespace YourProjectName.Automation.Pages.Home.Pet_Insurance
@@ -7,9 +9,11 @@ namespace YourProjectName.Automation.Pages.Home.Pet_Insurance
     public sealed class PetInsuranceSteps : StepBase
     {
         private readonly PetInsuranceLocators _petInsuranceLocators;
-        public PetInsuranceSteps(PetInsuranceLocators petInsuranceLocators)
+        private readonly TestDataManager<PetsDataModel> _petsDataManager;
+        public PetInsuranceSteps(PetInsuranceLocators petInsuranceLocators, TestDataManager<PetsDataModel> petsDataManager)
         {
             _petInsuranceLocators = petInsuranceLocators;
+            _petsDataManager = petsDataManager;
         }
 
         [Given(@"I have selected pet '(.*)'")]
@@ -41,10 +45,29 @@ namespace YourProjectName.Automation.Pages.Home.Pet_Insurance
         }
 
         [Then(@"Error '(.*)' for personal code field should be displayed")]
-        public void RequiredErrorForPersonCode(string errorTxt)
+        public void ErrorForPersonCode(string errorTxt)
         {
             TextElement.TextShouldEqual(_petInsuranceLocators.PersonalCodeErrorTxt, errorTxt);
         }
+
+        [Then(@"Error '(.*)' for phone number field should be displayed")]
+        public void ErrorPhoneNumber(string errorTxt)
+        {
+            TextElement.TextShouldEqual(_petInsuranceLocators.PhoneCodeErrorTxt, errorTxt);
+        }
+
+        [Given(@"I have filled information about pet using the data '(.*)'")]
+        public void EnterPetInfo(string dataName)
+        {
+            var data = _petsDataManager.GetData(dataName);
+
+            SelectBreed(data.Breed);
+            SelectDateOfBirth(data.DateOfBirth);
+            Input.Type(_petInsuranceLocators.PersNrInput, data.PersNr);
+            Input.Type(_petInsuranceLocators.EmailInput, data.Email);
+            Input.Type(_petInsuranceLocators.PhoneNumberInput, data.Phone);
+        }
+
 
     }
 }

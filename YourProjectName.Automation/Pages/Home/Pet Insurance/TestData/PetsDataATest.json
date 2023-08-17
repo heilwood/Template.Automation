@@ -1,0 +1,26 @@
+﻿[
+  {
+    "DataName": "Dog_Akita",
+    "Breed": "Akita",
+    "DateOfBirth": "2",
+    "PersNr": "20041932-43244",
+    "Email": "hello@world.eu",
+    "Phone": "234342434343"
+  },
+  {
+    "DataName": "Dog_Azavaks",
+    "Breed": "Azavaks",
+    "DateOfBirth": "8",
+    "PersNr": "20041932-13244",
+    "Email": "hello@world.eu",
+    "Phone": "234342434343"
+  },
+  {
+    "DataName": "Cat_Asian_Smoke",
+    "Breed": "Asian Smoke",
+    "DateOfBirth": "3",
+    "PersNr": "20041932-23244",
+    "Email": "hello@world.eu",
+    "Phone": "234342434343"
+  }
+]

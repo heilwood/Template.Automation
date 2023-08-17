@@ -22,4 +22,10 @@
     <ProjectReference Include="..\Common.Automation\Common.Automation.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Pages\Home\Pet Insurance\TestData\PetsDataATest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -25,9 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Common\TestData\CarInfoATest.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="ReportPortal.config.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -41,6 +41,8 @@ namespace Common.Automation.Common
             return Task.Run(() => DevToolsSessionManager.SetDevSession(Driver));
         }
 
+
+        //TODO: Maybe move to network adapter
         private async Task ListenToNetworkEvents()
         {
             var listenRequestsTask = Task.Run(() => NetworkAdapter.ListenRequests());
