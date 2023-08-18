@@ -19,15 +19,18 @@ namespace Common.Automation.Common
 
         public async Task OpenPageAsync(string url)
         {
-            var navigateTask = NavigateToUrl(url);
-            var setupDevToolsTask = SetupDevToolsSession();
-            await Task.WhenAll(navigateTask, setupDevToolsTask);
+            await NavigateToUrl(url);
 
-            await ListenToNetworkEvents();
+            //if (ConfigManager.BrowserName == Browser.BrowserName.Chrome)
+            //{
+            //    var setupDevToolsTask = SetupDevToolsSession();
+            //    await Task.WhenAll(navigateTask, setupDevToolsTask);
+            //    await ListenToNetworkEvents();
+            //}
 
             WaitForPageToLoad();
-            WaitUntilReqRespListsCleaned();
-
+            //WaitUntilReqRespListsCleaned();
+            WaitUntilAllRequestsFinished();
             LoggerHelper.Log().Information($"Url name: {url}");
         }
 

@@ -1,26 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TestProfile xmlns="http://www.specflow.org/schemas/plus/TestProfile/1.5">
-	<Settings projectName="Common.Automation"  outputFolder="../../../../TestResults" />
-	<Server serverUrl="http://swc195240.europe.ifint.biz:6365" publishResults="true" />
-	<!--<VSTest testRetryResults="Unified" passRateAbsolute="1"/>-->
-	<!--<Report>
-		<Template name="ReportTemplates\ClientJsonTemplateSpecRun3.cshtml" outputName="TestResults.json" />
-	</Report>-->
-	<Execution stopAfterFailures="0" retryFor="Failing" testThreadCount="4" testSchedulingMode="Adaptive" retryCount="0"/>
-	<Filter>!@Excluded</Filter>
-	<TestAssemblyPaths>
-		<TestAssemblyPath>Common.Automation.dll</TestAssemblyPath>
-	</TestAssemblyPaths>
-	<DeploymentTransformation>
-		<Steps>
-		</Steps>
-	</DeploymentTransformation>
-	<Targets>
-		<Target name="Chrome_PC_Functional">
-			<Filter>!@Excluded &amp; !@Layout &amp; !@SendResults</Filter>
-			<DeploymentTransformationSteps>
-				<EnvironmentVariable variable="browser" value="Chrome" />
+  <Settings projectName="YourProjectName.Automation"  outputFolder="TestResults" />
+  <Server serverUrl="http://swc195240.europe.ifint.biz:6365" publishResults="true" />
+  <!--<VSTest testRetryResults="Unified" passRateAbsolute="1"/>-->
+  <Report>
+    <Template name="ReportTemplates\ClientJsonTemplateSpecRun3.cshtml" outputName="TestResults.json" />
+  </Report>
+  <Execution stopAfterFailures="0" retryFor="Failing" testThreadCount="4" testSchedulingMode="Adaptive" retryCount="0" />
+  <Filter>!@Excluded</Filter>
+  <TestAssemblyPaths>
+    <TestAssemblyPath>YourProjectName.Automation.dll</TestAssemblyPath>
+  </TestAssemblyPaths>
+  <DeploymentTransformation>
+    <Steps>
+    </Steps>
+  </DeploymentTransformation>
+  <Targets>
+    <Target name="Chrome_PC_Functional">
+      <Filter>!@Excluded &amp; !@Layout &amp; !@SendResults</Filter>
+      <DeploymentTransformationSteps>
+        <EnvironmentVariable variable="browser" value="Chrome" />
+        <EnvironmentVariable variable="device" value="PC" />
       </DeploymentTransformationSteps>
-		</Target>
+    </Target>
+    <Target name="Firefox_PC_Functional">
+      <Filter>!@Excluded &amp; !@Layout &amp; !@SendResults</Filter>
+      <DeploymentTransformationSteps>
+        <EnvironmentVariable variable="browser" value="Firefox" />
+        <EnvironmentVariable variable="device" value="PC" />
+      </DeploymentTransformationSteps>
+    </Target>
   </Targets>
 </TestProfile>

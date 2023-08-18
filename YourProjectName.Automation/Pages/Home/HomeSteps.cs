@@ -21,7 +21,7 @@ namespace YourProjectName.Automation.Pages.Home
         public void OpenIfHomeUrl()
         {
             Navigation.OpenPageAsync(ConfigManager.MainUrl).GetAwaiter().GetResult();
-            Button.Click(_commonLocatorsBase.AcceptCookiesButton);
+            Button.ClickAndWait(_commonLocatorsBase.AcceptCookiesButton);
         }
 
         [Given(@"I have selected '(.*)' from category '(.*)'")]

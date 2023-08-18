@@ -32,8 +32,8 @@ namespace Common.Automation.Common.Actions
 
             Click(button);
             WaitUntilVisible(valuesList);
-            var element = GetChildByText(valuesList, valueText);
-            ClickAndWait(element);
+            var value = GetChildByText(valuesList, valueText);
+            ClickAndWait(value);
         }
     }
 }

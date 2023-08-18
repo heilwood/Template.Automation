@@ -15,6 +15,7 @@ namespace Common.Automation.Common.Actions.ElementsBase
         protected IWebDriver Driver;
         protected readonly LoggerHelper LoggerHelper;
         protected readonly NetworkAdapterHelper NetworkAdapter;
+        private int _savedRequestsCount;
 
         public ElementBase(IWebDriver driver, NetworkAdapterHelper networkAdapter, LoggerHelper loggerHelper)
         {
@@ -133,18 +134,18 @@ namespace Common.Automation.Common.Actions.ElementsBase
             }
         }
 
-        public void WaitUntilAllRequestsFinished()
-        {
-            try
-            {
-                Wait(Driver, 30).Until(d => IsRequestFinished());
-            }
-            catch (WebDriverTimeoutException)
-            {
-                NetworkAdapter.PrintStuckRequests();
-                throw new WebDriverTimeoutException("Some requests have been stuck");
-            }
-        }
+        //public void WaitUntilAllRequestsFinished()
+        //{
+        //    try
+        //    {
+        //        Wait(Driver, 30).Until(d => IsRequestFinished());
+        //    }
+        //    catch (WebDriverTimeoutException)
+        //    {
+        //        NetworkAdapter.PrintStuckRequests();
+        //        throw new WebDriverTimeoutException("Some requests have been stuck");
+        //    }
+        //}
 
         public bool IsRespReqListsCleaned()
         {
@@ -179,6 +180,75 @@ namespace Common.Automation.Common.Actions.ElementsBase
         {
             var by = By.XPath($".//*[contains(text(),'{text}')]");
             return by;
+        }
+
+        public int GetRequestsCount()
+        {
+            var attemptsCount = 0;
+            var js = (IJavaScriptExecutor)Driver;
+            var script = "return window.performance.getEntries();";
+            var reqCount = js.ExecuteScript(script);
+
+            while (reqCount == null && attemptsCount < 50)
+            {
+                Thread.Sleep(100);
+                reqCount = js.ExecuteScript(script);
+                attemptsCount += 1;
+            }
+
+            if (reqCount == null) throw new Exception("Can't get requests, javascript executor results always null");
+
+            var numberOfItems = ((System.Collections.ObjectModel.ReadOnlyCollection<object>)reqCount).Count;
+            return numberOfItems;
+        }
+
+        public bool ResourceLoadingFinished(int maxWaitMilliseconds = 5000, int pollIntervalMilliseconds = 250)
+        {
+            int initialRequestCount = GetRequestsCount();
+            int elapsedTime = 0;
+
+            while (elapsedTime < maxWaitMilliseconds)
+            {
+                Thread.Sleep(pollIntervalMilliseconds);
+                elapsedTime += pollIntervalMilliseconds;
+
+                int currentRequestCount = GetRequestsCount();
+
+                // If the request count hasn't changed
+                if (initialRequestCount == currentRequestCount)
+                {
+                    // If the saved request count is different and not zero, update and return false
+                    if (_savedRequestsCount != currentRequestCount && _savedRequestsCount != 0)
+                    {
+                        _savedRequestsCount = currentRequestCount;
+                        return false;
+                    }
+
+                    // Otherwise, loading seems to be finished
+                    return true;
+                }
+
+                initialRequestCount = currentRequestCount;
+            }
+
+            // If we reach here, the request count never stabilized within the timeout
+            _savedRequestsCount = initialRequestCount;
+            return false;
+        }
+
+
+
+        public void WaitUntilAllRequestsFinished()
+        {
+            try
+            {
+                Wait(Driver, 30).Until((d) => ResourceLoadingFinished());
+                _savedRequestsCount = 0;
+            }
+            catch
+            {
+                throw new Exception("Requests not loaded");
+            }
         }
     }
 }

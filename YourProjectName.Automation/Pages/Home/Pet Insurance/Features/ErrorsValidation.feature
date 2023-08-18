@@ -1,7 +1,6 @@
 ﻿Feature: ErrorsValidation
 
 #SIMPLE EXAMPLE
-@PetInsurance
 Scenario: Pet Insurance: Personal code is required error validation
 	Given I have opened IF insurance home page
 	And I have selected 'Pirkt' from category 'Mājdzīvniekam'
@@ -13,7 +12,6 @@ Scenario: Pet Insurance: Personal code is required error validation
 
 
 #TEST DATA EXAMPLE
-@PetInsurance
 Scenario Outline: Pet Insurance: Incorrect phone and personal number error validation 
 	Given I have opened IF insurance home page
 	And I have selected 'Pirkt' from category 'Mājdzīvniekam'

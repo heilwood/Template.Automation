@@ -16,7 +16,7 @@ namespace Common.Automation
     public static class AutofacConfig
     {
         private static readonly IContainer DefaultContainer;
-        private static readonly ThreadLocal<ILifetimeScope> _mainScope = new ThreadLocal<ILifetimeScope>(() => DefaultContainer.BeginLifetimeScope());
+        private static readonly ThreadLocal<ILifetimeScope> _mainScope = new(() => DefaultContainer.BeginLifetimeScope());
 
         static AutofacConfig()
         {

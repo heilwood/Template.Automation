@@ -8,7 +8,8 @@ namespace Common.Automation.Common.Helpers
         public static string GetWorkingDirectory()
         {
             var path = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
-            return path;
+            var fullPath = Path.GetFullPath(Path.Combine(path, @"..\..\"));
+            return fullPath;
         }
     }
 }

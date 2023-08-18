@@ -27,7 +27,7 @@ namespace Common.Automation.Common.Browser
             var options = _settingsProvider.GetBrowserSettings(browser).GetBrowserSettings();
             return browser switch
             {
-                BrowserName.Firefox => new FirefoxDriver((FirefoxOptions)options),
+                BrowserName.Firefox => new FirefoxDriver(_assemblyDirectory, (FirefoxOptions)options),
                 BrowserName.Chrome => new ChromeDriver(_assemblyDirectory, (ChromeOptions)options),
                 _ => throw new UnsupportedBrowserException($"Unknown browser name {browser}")
             };
