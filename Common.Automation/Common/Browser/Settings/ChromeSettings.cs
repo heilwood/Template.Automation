@@ -13,6 +13,7 @@ namespace Common.Automation.Common.Browser.Settings
             options.AddArguments("--ignore-certificate-errors");
             options.AddArguments("--acceptSslCert");
             options.AddArguments("--disable-extensions");
+            options.AddArgument("--proxy-server=http://localhost:8888");
 
 
             return options;

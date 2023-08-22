@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FiddlerCore5" Version="5.0.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.0" />
     <PackageReference Include="ReportPortal.Client" Version="3.0.6" />
     <PackageReference Include="ReportPortal.Shared" Version="3.2.0" />

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using Common.Automation.Common.Helpers;
 using Common.Automation.Common.Helpers.DevTools;
+using Common.Automation.Common.Helpers.PageLoader;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
@@ -14,12 +15,12 @@ namespace Common.Automation.Common.Actions.ElementsBase
     {
         protected IWebDriver Driver;
         protected readonly LoggerHelper LoggerHelper;
-        protected readonly NetworkAdapterHelper NetworkAdapter;
-        private int _savedRequestsCount;
+        protected readonly IFiddlerMonitor FiddlerMonitor;
+        private DateTime _lastRequestTimestamp = DateTime.MinValue;
 
-        public ElementBase(IWebDriver driver, NetworkAdapterHelper networkAdapter, LoggerHelper loggerHelper)
+        public ElementBase(IWebDriver driver, IFiddlerMonitor fiddlerMonitor, LoggerHelper loggerHelper)
         {
-            NetworkAdapter = networkAdapter ?? throw new ArgumentNullException(nameof(networkAdapter));
+            FiddlerMonitor = fiddlerMonitor ?? throw new ArgumentNullException(nameof(fiddlerMonitor));
             LoggerHelper = loggerHelper ?? throw new ArgumentNullException(nameof(loggerHelper));
             Driver = driver ?? throw new ArgumentNullException(nameof(driver));
         }
@@ -112,61 +113,6 @@ namespace Common.Automation.Common.Actions.ElementsBase
             return elements;
         }
 
-        
-        public bool IsRequestFinished()
-        {
-            //500 ms wait added because between requests can be delays up to 500ms, not affecting performance of tests
-            var stopwatch = Stopwatch.StartNew();
-            var timeout = TimeSpan.FromSeconds(30);
-            var pendingReqIds = NetworkAdapter.GetPendingRequests();
-
-            while (true)
-            {
-                lock (pendingReqIds)
-                {
-                    //TODO: Check on automati MO and OpenPages
-                    if (!pendingReqIds.Any()) return true;
-                }
-
-                if (stopwatch.Elapsed > timeout) return false;
-
-                Thread.Sleep(500);
-            }
-        }
-
-        //public void WaitUntilAllRequestsFinished()
-        //{
-        //    try
-        //    {
-        //        Wait(Driver, 30).Until(d => IsRequestFinished());
-        //    }
-        //    catch (WebDriverTimeoutException)
-        //    {
-        //        NetworkAdapter.PrintStuckRequests();
-        //        throw new WebDriverTimeoutException("Some requests have been stuck");
-        //    }
-        //}
-
-        public bool IsRespReqListsCleaned()
-        {
-            if (!NetworkAdapter.GetPendingRequests().Any()) return true;
-
-            NetworkAdapter.ResetPendingRequests();
-            return false;
-        }
-
-        public void WaitUntilReqRespListsCleaned()
-        {
-            try
-            {
-                Wait(Driver).Until(d => IsRespReqListsCleaned());
-            }
-            catch (WebDriverTimeoutException)
-            {
-                throw new WebDriverTimeoutException("Can't clean request and response lists from DevTools");
-            }
-            
-        }
 
         public IWebElement GetChildByText(By parent, string childTxt)
         {
@@ -182,72 +128,31 @@ namespace Common.Automation.Common.Actions.ElementsBase
             return by;
         }
 
-        public int GetRequestsCount()
+        private bool ResourceLoadingFinished()
         {
-            var attemptsCount = 0;
-            var js = (IJavaScriptExecutor)Driver;
-            var script = "return window.performance.getEntries();";
-            var reqCount = js.ExecuteScript(script);
+            var pendingRequests = FiddlerMonitor.GetPendingRequests();
 
-            while (reqCount == null && attemptsCount < 50)
+            if (pendingRequests.Any())
             {
-                Thread.Sleep(100);
-                reqCount = js.ExecuteScript(script);
-                attemptsCount += 1;
+                _lastRequestTimestamp = DateTime.Now;
+                return false;
             }
 
-            if (reqCount == null) throw new Exception("Can't get requests, javascript executor results always null");
-
-            var numberOfItems = ((System.Collections.ObjectModel.ReadOnlyCollection<object>)reqCount).Count;
-            return numberOfItems;
+            var coolingPeriod = TimeSpan.FromMilliseconds(500);
+            return DateTime.Now - _lastRequestTimestamp > coolingPeriod;
         }
-
-        public bool ResourceLoadingFinished(int maxWaitMilliseconds = 5000, int pollIntervalMilliseconds = 250)
-        {
-            int initialRequestCount = GetRequestsCount();
-            int elapsedTime = 0;
-
-            while (elapsedTime < maxWaitMilliseconds)
-            {
-                Thread.Sleep(pollIntervalMilliseconds);
-                elapsedTime += pollIntervalMilliseconds;
-
-                int currentRequestCount = GetRequestsCount();
-
-                // If the request count hasn't changed
-                if (initialRequestCount == currentRequestCount)
-                {
-                    // If the saved request count is different and not zero, update and return false
-                    if (_savedRequestsCount != currentRequestCount && _savedRequestsCount != 0)
-                    {
-                        _savedRequestsCount = currentRequestCount;
-                        return false;
-                    }
-
-                    // Otherwise, loading seems to be finished
-                    return true;
-                }
-
-                initialRequestCount = currentRequestCount;
-            }
-
-            // If we reach here, the request count never stabilized within the timeout
-            _savedRequestsCount = initialRequestCount;
-            return false;
-        }
-
-
 
         public void WaitUntilAllRequestsFinished()
         {
             try
             {
                 Wait(Driver, 30).Until((d) => ResourceLoadingFinished());
-                _savedRequestsCount = 0;
             }
             catch
             {
-                throw new Exception("Requests not loaded");
+                var pendingRequests = FiddlerMonitor.GetPendingRequests();
+                var pendingRequestsMessage = string.Join(", ", pendingRequests);
+                throw new Exception($"Requests not loaded, you can add _requestUrlsToSkip in RequestTracker.cs: {pendingRequestsMessage}");
             }
         }
     }

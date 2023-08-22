@@ -1,6 +1,7 @@
 ﻿using Common.Automation.Common.Actions.ElementsBase;
 using Common.Automation.Common.Helpers;
 using Common.Automation.Common.Helpers.DevTools;
+using Common.Automation.Common.Helpers.PageLoader;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
@@ -10,10 +11,10 @@ namespace Common.Automation.Common.Actions
     {
         private readonly TextElementBase _textElementBase;
 
-        public Dropdown(IWebDriver driver, NetworkAdapterHelper networkAdapter, LoggerHelper loggerHelper)
-            : base(driver, networkAdapter, loggerHelper)
+        public Dropdown(IWebDriver driver, IFiddlerMonitor fiddlerMonitor, LoggerHelper loggerHelper)
+            : base(driver, fiddlerMonitor, loggerHelper)
         {
-            _textElementBase = new TextElementBase(driver, networkAdapter, loggerHelper);
+            _textElementBase = new TextElementBase(driver, fiddlerMonitor, loggerHelper);
         }
 
         public void SelectByOptionText(By dropdown, string valueText)

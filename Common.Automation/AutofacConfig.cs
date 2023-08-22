@@ -10,6 +10,7 @@ using OpenQA.Selenium;
 using System.Threading;
 using TechTalk.SpecFlow;
 using System;
+using Common.Automation.Common.Helpers.PageLoader;
 
 namespace Common.Automation
 {
@@ -24,10 +25,10 @@ namespace Common.Automation
 
             RegisterHelpers(builder);
             RegisterDevToolsSession(builder);
-            RegisterAdapters(builder);
+            RegisterFiddlerComponents(builder);
             RegisterBrowserComponents(builder);
             RegisterElements(builder);
-
+            
             DefaultContainer = builder.Build();
         }
 
@@ -48,6 +49,14 @@ namespace Common.Automation
             }
         }
 
+        private static void RegisterDevToolsSession(ContainerBuilder builder)
+        {
+            var devToolsSessionManager = new DevToolsSessionManager();
+            builder.RegisterInstance(devToolsSessionManager)
+                .As<IDevToolsSessionManager>()
+                .SingleInstance();
+        }
+
         public static void InitializeTestSession(IWebDriver driver, ScenarioContext scenarioContext)
         {
             _mainScope.Value?.Dispose();
@@ -59,23 +68,7 @@ namespace Common.Automation
             });
         }
 
-        private static void RegisterDevToolsSession(ContainerBuilder builder)
-        {
-            var devToolsSessionManager = new DevToolsSessionManager();
-            builder.RegisterInstance(devToolsSessionManager)
-                   .As<IDevToolsSessionManager>()
-                   .SingleInstance();
-        }
 
-        private static void RegisterAdapters(ContainerBuilder builder)
-        {
-            builder.Register(c =>
-            {
-                var sessionManager = c.Resolve<IDevToolsSessionManager>();
-                var logger = c.Resolve<LoggerHelper>();
-                return new NetworkAdapterHelper(sessionManager, logger);
-            }).SingleInstance();
-        }
 
         private static void RegisterHelpers(ContainerBuilder builder)
         {
@@ -105,6 +98,13 @@ namespace Common.Automation
             builder.RegisterType<Window>().InstancePerDependency();
             builder.RegisterType<Navigation>().InstancePerDependency().PropertiesAutowired();
             builder.RegisterType<Tab>().InstancePerDependency();
+        }
+
+
+        private static void RegisterFiddlerComponents(ContainerBuilder builder)
+        {
+            builder.RegisterType<RequestTracker>().As<IRequestTracker>().SingleInstance();
+            builder.RegisterType<FiddlerMonitor>().As<IFiddlerMonitor>().SingleInstance();
         }
 
         public static void DisposeCurrentScope()
