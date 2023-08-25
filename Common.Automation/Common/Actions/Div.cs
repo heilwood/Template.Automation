@@ -8,8 +8,8 @@ namespace Common.Automation.Common.Actions
 {
     public class Div : TextElementBase
     {
-        public Div(IWebDriver driver, IFiddlerMonitor fiddlerMonitor, LoggerHelper loggerHelper)
-            : base(driver, fiddlerMonitor, loggerHelper)
+        public Div(IWebDriver driver, RequestStrategyFactory strategyFactory, LoggerHelper loggerHelper)
+            : base(driver, strategyFactory, loggerHelper)
         {
         }
     }

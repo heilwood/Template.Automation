@@ -7,8 +7,8 @@ namespace Common.Automation.Common.Actions.ElementsBase
 {
     public class ClickElementBase : ElementBase
     {
-        public ClickElementBase(IWebDriver driver, IFiddlerMonitor fiddlerMonitor, LoggerHelper loggerHelper)
-            : base(driver, fiddlerMonitor, loggerHelper)
+        public ClickElementBase(IWebDriver driver, RequestStrategyFactory strategyFactory, LoggerHelper loggerHelper)
+            : base(driver, strategyFactory, loggerHelper)
         {
         }
 

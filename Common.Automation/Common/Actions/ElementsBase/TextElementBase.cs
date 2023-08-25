@@ -9,8 +9,8 @@ namespace Common.Automation.Common.Actions.ElementsBase
 {
     public class TextElementBase : ElementBase
     {
-        public TextElementBase(IWebDriver driver, IFiddlerMonitor fiddlerMonitor, LoggerHelper loggerHelper)
-            : base(driver, fiddlerMonitor, loggerHelper)
+        public TextElementBase(IWebDriver driver, RequestStrategyFactory strategyFactory, LoggerHelper loggerHelper)
+            : base(driver, strategyFactory, loggerHelper)
         {
         }
 

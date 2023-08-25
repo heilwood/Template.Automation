@@ -8,8 +8,8 @@ namespace Common.Automation.Common.Actions
 {
     public class Input : InputElementBase
     {
-        public Input(IWebDriver driver, IFiddlerMonitor fiddlerMonitor, LoggerHelper loggerHelper)
-            : base(driver, fiddlerMonitor, loggerHelper)
+        public Input(IWebDriver driver, RequestStrategyFactory strategyFactory, LoggerHelper loggerHelper)
+            : base(driver, strategyFactory, loggerHelper)
         {
         }
     }

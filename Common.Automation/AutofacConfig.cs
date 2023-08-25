@@ -10,6 +10,7 @@ using OpenQA.Selenium;
 using System.Threading;
 using TechTalk.SpecFlow;
 using System;
+using Common.Automation.Common.Helpers.Fiddler;
 using Common.Automation.Common.Helpers.PageLoader;
 
 namespace Common.Automation
@@ -25,7 +26,9 @@ namespace Common.Automation
 
             RegisterHelpers(builder);
             RegisterDevToolsSession(builder);
+            RegisterAdapters(builder);
             RegisterFiddlerComponents(builder);
+            RegisterRequestStrategyFactory(builder);
             RegisterBrowserComponents(builder);
             RegisterElements(builder);
             
@@ -65,10 +68,19 @@ namespace Common.Automation
             {
                 b.RegisterInstance(driver).As<IWebDriver>().SingleInstance();
                 b.RegisterInstance(scenarioContext).As<ScenarioContext>().SingleInstance();
+
             });
         }
 
-
+        private static void RegisterAdapters(ContainerBuilder builder)
+        {
+            builder.Register(c =>
+            {
+                var sessionManager = c.Resolve<IDevToolsSessionManager>();
+                var logger = c.Resolve<LoggerHelper>();
+                return new NetworkAdapterHelper(sessionManager, logger);
+            }).SingleInstance();
+        }
 
         private static void RegisterHelpers(ContainerBuilder builder)
         {
@@ -103,9 +115,18 @@ namespace Common.Automation
 
         private static void RegisterFiddlerComponents(ContainerBuilder builder)
         {
+            builder.RegisterType<FiddlerPort>().SingleInstance();
             builder.RegisterType<RequestTracker>().As<IRequestTracker>().SingleInstance();
+            builder.RegisterType<CertificateManager>().SingleInstance();
             builder.RegisterType<FiddlerMonitor>().As<IFiddlerMonitor>().SingleInstance();
         }
+
+
+        private static void RegisterRequestStrategyFactory(ContainerBuilder builder)
+        {
+            builder.RegisterType<RequestStrategyFactory>().InstancePerDependency();
+        }
+
 
         public static void DisposeCurrentScope()
         {

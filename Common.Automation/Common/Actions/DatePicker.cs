@@ -8,8 +8,8 @@ namespace Common.Automation.Common.Actions
 {
     public class DatePicker : ClickElementBase
     {
-        public DatePicker(IWebDriver driver, IFiddlerMonitor fiddlerMonitor, LoggerHelper loggerHelper)
-            : base(driver, fiddlerMonitor, loggerHelper)
+        public DatePicker(IWebDriver driver, RequestStrategyFactory strategyFactory, LoggerHelper loggerHelper)
+            : base(driver, strategyFactory, loggerHelper)
         {
         }
 

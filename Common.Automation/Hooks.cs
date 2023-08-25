@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Common.Automation.Common.Browser;
+using Common.Automation.Common.Helpers.Fiddler;
 using Common.Automation.Common.Helpers.PageLoader;
 using Common.Automation.Common.Helpers.ScreenShot;
 using Fiddler;
@@ -31,7 +33,6 @@ namespace Common.Automation
         [BeforeScenario]
         public void BeforeScenario()
         {
-            _fiddlerMonitor.Start();
 #if DEBUG
             _driver = _browserFactory.RemoteDriver(ConfigManager.BrowserName, ConfigManager.SeleniumHubUrl);
 #else
@@ -39,8 +40,6 @@ namespace Common.Automation
 #endif
            
             _driver.Manage().Window.Maximize();
-
-
             AutofacConfig.InitializeTestSession(_driver, _scenarioContext);
         }
 

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Common.Automation.Common.Helpers.PageLoader
+namespace Common.Automation.Common.Helpers.Fiddler
 {
     public interface IFiddlerMonitor
     {

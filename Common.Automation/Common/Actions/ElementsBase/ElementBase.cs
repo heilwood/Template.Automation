@@ -15,12 +15,13 @@ namespace Common.Automation.Common.Actions.ElementsBase
     {
         protected IWebDriver Driver;
         protected readonly LoggerHelper LoggerHelper;
-        protected readonly IFiddlerMonitor FiddlerMonitor;
-        private DateTime _lastRequestTimestamp = DateTime.MinValue;
 
-        public ElementBase(IWebDriver driver, IFiddlerMonitor fiddlerMonitor, LoggerHelper loggerHelper)
+        private DateTime _lastRequestTimestamp = DateTime.MinValue;
+        protected readonly RequestStrategyFactory StrategyFactory;
+
+        public ElementBase(IWebDriver driver, RequestStrategyFactory strategyFactory, LoggerHelper loggerHelper)
         {
-            FiddlerMonitor = fiddlerMonitor ?? throw new ArgumentNullException(nameof(fiddlerMonitor));
+            StrategyFactory = strategyFactory ?? throw new ArgumentNullException(nameof(strategyFactory));
             LoggerHelper = loggerHelper ?? throw new ArgumentNullException(nameof(loggerHelper));
             Driver = driver ?? throw new ArgumentNullException(nameof(driver));
         }
@@ -130,16 +131,21 @@ namespace Common.Automation.Common.Actions.ElementsBase
 
         private bool ResourceLoadingFinished()
         {
-            var pendingRequests = FiddlerMonitor.GetPendingRequests();
+            var coolingPeriod = TimeSpan.FromMilliseconds(250);
+            var requestStrategy = StrategyFactory.CreateStrategy();
+            var pendingRequests = requestStrategy.GetPendingRequests();
 
-            if (pendingRequests.Any())
+            if (!pendingRequests.Any())
             {
-                _lastRequestTimestamp = DateTime.Now;
-                return false;
+                Thread.Sleep(coolingPeriod);
+                pendingRequests = requestStrategy.GetPendingRequests();
             }
 
-            var coolingPeriod = TimeSpan.FromMilliseconds(500);
-            return DateTime.Now - _lastRequestTimestamp > coolingPeriod;
+            if (!pendingRequests.Any()) return DateTime.Now - _lastRequestTimestamp > coolingPeriod;
+            _lastRequestTimestamp = DateTime.Now;
+            return false;
+
+
         }
 
         public void WaitUntilAllRequestsFinished()
@@ -150,7 +156,7 @@ namespace Common.Automation.Common.Actions.ElementsBase
             }
             catch
             {
-                var pendingRequests = FiddlerMonitor.GetPendingRequests();
+                var pendingRequests = StrategyFactory.CreateStrategy().GetPendingRequests();
                 var pendingRequestsMessage = string.Join(", ", pendingRequests);
                 throw new Exception($"Requests not loaded, you can add _requestUrlsToSkip in RequestTracker.cs: {pendingRequestsMessage}");
             }

@@ -14,14 +14,17 @@ namespace Common.Automation.Common
 
     public class Navigation : ElementBase
     {
-        public Navigation(IWebDriver driver, IFiddlerMonitor fiddlerMonitor, LoggerHelper loggerHelper)
-            : base(driver, fiddlerMonitor, loggerHelper)
+        public Navigation(IWebDriver driver, RequestStrategyFactory strategyFactory, LoggerHelper loggerHelper)
+            : base(driver, strategyFactory, loggerHelper)
         {
         }
 
-        public void OpenPage(string url)
+        public async Task OpenPageAsync(string url)
         {
-            Driver.Url = url;
+            var navigateTask = Task.Run(() => Driver.Url = url);
+            var strategyTask = Task.Run(() => StrategyFactory.CreateStrategy().Start());
+
+            await Task.WhenAll(navigateTask, strategyTask);
 
             WaitForPageToLoad();
             WaitUntilAllRequestsFinished();

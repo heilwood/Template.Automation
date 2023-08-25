@@ -12,8 +12,6 @@
     <TestAssemblyPath>YourProjectName.Automation.dll</TestAssemblyPath>
   </TestAssemblyPaths>
   <DeploymentTransformation>
-    <Steps>
-    </Steps>
   </DeploymentTransformation>
   <Targets>
     <Target name="Chrome_PC_Functional">

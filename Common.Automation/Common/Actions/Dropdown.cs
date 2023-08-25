@@ -11,10 +11,10 @@ namespace Common.Automation.Common.Actions
     {
         private readonly TextElementBase _textElementBase;
 
-        public Dropdown(IWebDriver driver, IFiddlerMonitor fiddlerMonitor, LoggerHelper loggerHelper)
-            : base(driver, fiddlerMonitor, loggerHelper)
+        public Dropdown(IWebDriver driver, RequestStrategyFactory strategyFactory, LoggerHelper loggerHelper)
+            : base(driver, strategyFactory, loggerHelper)
         {
-            _textElementBase = new TextElementBase(driver, fiddlerMonitor, loggerHelper);
+            _textElementBase = new TextElementBase(driver, strategyFactory, loggerHelper);
         }
 
         public void SelectByOptionText(By dropdown, string valueText)

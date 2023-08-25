@@ -20,7 +20,7 @@ namespace YourProjectName.Automation.Pages.Home
         [Given(@"I have opened IF insurance home page")]
         public void OpenIfHomeUrl()
         {
-            Navigation.OpenPage(ConfigManager.MainUrl);
+            Navigation.OpenPageAsync(ConfigManager.MainUrl).GetAwaiter().GetResult();
             Button.ClickAndWait(_commonLocatorsBase.AcceptCookiesButton);
         }
 
