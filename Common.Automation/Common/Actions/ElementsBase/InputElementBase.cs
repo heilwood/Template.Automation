@@ -1,13 +1,12 @@
 ﻿using Common.Automation.Common.Helpers;
 using Common.Automation.Common.Helpers.DevTools;
-using Common.Automation.Common.Helpers.PageLoader;
 using OpenQA.Selenium;
 
 namespace Common.Automation.Common.Actions.ElementsBase
 {
     public class InputElementBase : ElementBase
     {
-        public InputElementBase(IWebDriver driver, RequestStrategyFactory strategyFactory, LoggerHelper loggerHelper)
+        public InputElementBase(IWebDriver driver, NetworkAdapterFactory strategyFactory, LoggerHelper loggerHelper)
             : base(driver, strategyFactory, loggerHelper)
         {
         }

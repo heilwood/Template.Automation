@@ -5,8 +5,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Common.Automation.Common.Browser;
-using Common.Automation.Common.Helpers.Fiddler;
-using Common.Automation.Common.Helpers.PageLoader;
 using Common.Automation.Common.Helpers.ScreenShot;
 using Fiddler;
 using OpenQA.Selenium;
@@ -21,11 +19,9 @@ namespace Common.Automation
         private IWebDriver _driver;
         private readonly BrowserFactory _browserFactory;
         private readonly ScenarioContext _scenarioContext;
-        private readonly IFiddlerMonitor _fiddlerMonitor;
 
         protected Hooks(ScenarioContext scenarioContext) {
             _browserFactory = AutofacConfig.Resolve<BrowserFactory>();
-            _fiddlerMonitor = AutofacConfig.Resolve<IFiddlerMonitor>();
             _scenarioContext = scenarioContext;
         }
 
@@ -52,7 +48,6 @@ namespace Common.Automation
                 screenShotHelper.CurrentViewScreenShot();
             }
 
-            _fiddlerMonitor.Stop();
             _driver?.Quit();
         }
     }

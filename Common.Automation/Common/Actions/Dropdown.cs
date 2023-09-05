@@ -1,7 +1,6 @@
 ﻿using Common.Automation.Common.Actions.ElementsBase;
 using Common.Automation.Common.Helpers;
 using Common.Automation.Common.Helpers.DevTools;
-using Common.Automation.Common.Helpers.PageLoader;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
@@ -11,7 +10,7 @@ namespace Common.Automation.Common.Actions
     {
         private readonly TextElementBase _textElementBase;
 
-        public Dropdown(IWebDriver driver, RequestStrategyFactory strategyFactory, LoggerHelper loggerHelper)
+        public Dropdown(IWebDriver driver, NetworkAdapterFactory strategyFactory, LoggerHelper loggerHelper)
             : base(driver, strategyFactory, loggerHelper)
         {
             _textElementBase = new TextElementBase(driver, strategyFactory, loggerHelper);

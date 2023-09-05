@@ -20,7 +20,7 @@ namespace YourProjectName.Automation.Pages.Home.Pet_Insurance
         [Given(@"I have selected pet '(.*)'")]
         public void SelectPet(string petName)
         {
-            Radio.Click(_petInsuranceLocators.SelectPetRadio(petName));
+            Radio.ClickAndWait(_petInsuranceLocators.SelectPetRadio(petName));
         }
 
         [Given(@"I have selected breed '(.*)'")]
@@ -57,7 +57,7 @@ namespace YourProjectName.Automation.Pages.Home.Pet_Insurance
             TextElement.TextShouldEqual(_petInsuranceLocators.PhoneCodeErrorTxt, errorTxt);
         }
 
-        [Given(@"I have filled information about pet using the data '(.*)'")]
+        [Given(@"I have filled information about pet using data with name '(.*)'")]
         public void EnterPetInfo(string dataName)
         {
             var data = _petsDataManager.GetData(dataName);

@@ -10,8 +10,7 @@ using OpenQA.Selenium;
 using System.Threading;
 using TechTalk.SpecFlow;
 using System;
-using Common.Automation.Common.Helpers.Fiddler;
-using Common.Automation.Common.Helpers.PageLoader;
+
 
 namespace Common.Automation
 {
@@ -27,7 +26,6 @@ namespace Common.Automation
             RegisterHelpers(builder);
             RegisterDevToolsSession(builder);
             RegisterAdapters(builder);
-            RegisterFiddlerComponents(builder);
             RegisterRequestStrategyFactory(builder);
             RegisterBrowserComponents(builder);
             RegisterElements(builder);
@@ -78,7 +76,14 @@ namespace Common.Automation
             {
                 var sessionManager = c.Resolve<IDevToolsSessionManager>();
                 var logger = c.Resolve<LoggerHelper>();
-                return new NetworkAdapterHelper(sessionManager, logger);
+                return new ChromeNetworkAdapter(sessionManager, logger);
+            }).SingleInstance();
+
+            builder.Register(c =>
+            {
+                var sessionManager = c.Resolve<IDevToolsSessionManager>();
+                var logger = c.Resolve<LoggerHelper>();
+                return new FirefoxNetworkAdapter(sessionManager, logger);
             }).SingleInstance();
         }
 
@@ -113,18 +118,15 @@ namespace Common.Automation
         }
 
 
-        private static void RegisterFiddlerComponents(ContainerBuilder builder)
-        {
-            builder.RegisterType<FiddlerPort>().SingleInstance();
-            builder.RegisterType<RequestTracker>().As<IRequestTracker>().SingleInstance();
-            builder.RegisterType<CertificateManager>().SingleInstance();
-            builder.RegisterType<FiddlerMonitor>().As<IFiddlerMonitor>().SingleInstance();
-        }
-
-
         private static void RegisterRequestStrategyFactory(ContainerBuilder builder)
         {
-            builder.RegisterType<RequestStrategyFactory>().InstancePerDependency();
+            //builder.Register(c =>
+            //{
+            //    var chromeNetworkAdapter = c.Resolve<ChromeNetworkAdapter>();
+            //    var firefoxNetworkAdapter = c.Resolve<FirefoxNetworkAdapter>();
+            //    return new NetworkAdapterFactory(chromeNetworkAdapter, firefoxNetworkAdapter);
+            //}).SingleInstance();
+            builder.RegisterType<NetworkAdapterFactory>().SingleInstance();
         }
 
 
