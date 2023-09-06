@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using OpenQA.Selenium.DevTools.V116;
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.DevTools;
 using OpenQA.Selenium.DevTools.V116.Network;
+using DevToolsSessionDomains = OpenQA.Selenium.DevTools.V116.DevToolsSessionDomains;
 
 namespace Common.Automation.Common.Helpers.DevTools
 {
@@ -10,31 +9,21 @@ namespace Common.Automation.Common.Helpers.DevTools
     {
         private volatile NetworkAdapter _networkAdapter;
 
-        public ChromeNetworkAdapter(IDevToolsSessionManager devToolsSessionManager, LoggerHelper loggerHelper)
-            : base(devToolsSessionManager, loggerHelper)
+        //public ChromeNetworkAdapter(IDevToolsSessionManager devToolsSessionManager, LoggerHelper loggerHelper)
+        //    : base(devToolsSessionManager, loggerHelper)
+        //{
+        //}
+
+
+        private void SetNetworkAdapter(DevToolsSession session)
         {
-        }
-
-
-        public NetworkAdapter GetNetworkAdapter()
-        {
-            if (_networkAdapter != null) return _networkAdapter;
-            lock (LockObject)
-            {
-
-                if (_networkAdapter != null) return _networkAdapter;
-                _networkAdapter = DevToolsSessionManager.Session.GetVersionSpecificDomains<DevToolsSessionDomains>().Network;
-                _networkAdapter.Enable(new EnableCommandSettings());
-            }
-
-            return _networkAdapter;
+            _networkAdapter = session.GetVersionSpecificDomains<DevToolsSessionDomains>().Network;
+            _networkAdapter.Enable(new EnableCommandSettings());
         }
 
         public override void ListenRequests()
         {
-            var networkAdapter = GetNetworkAdapter();
-
-            networkAdapter.RequestWillBeSent += RequestEvent;
+            _networkAdapter.RequestWillBeSent += RequestEvent;
             return;
 
             void RequestEvent(object sender, RequestWillBeSentEventArgs e)
@@ -45,9 +34,7 @@ namespace Common.Automation.Common.Helpers.DevTools
 
         public override void ListenLoadingFinished()
         {
-            var networkAdapter = GetNetworkAdapter();
-
-            networkAdapter.LoadingFinished += LoadingFinishedEvent;
+            _networkAdapter.LoadingFinished += LoadingFinishedEvent;
             return;
 
             void LoadingFinishedEvent(object sender, LoadingFinishedEventArgs e)
@@ -58,9 +45,7 @@ namespace Common.Automation.Common.Helpers.DevTools
 
         public override void ListenLoadingFailed()
         {
-            var networkAdapter = GetNetworkAdapter();
-
-            networkAdapter.LoadingFailed += LoadingFailedEvent;
+            _networkAdapter.LoadingFailed += LoadingFailedEvent;
             return;
 
             void LoadingFailedEvent(object sender, LoadingFailedEventArgs e)
@@ -69,8 +54,10 @@ namespace Common.Automation.Common.Helpers.DevTools
             }
         }
 
-        public override void Start()
+        public override void Start(IWebDriver driver)
         {
+            var session = (driver as IDevTools)?.GetDevToolsSession();
+            SetNetworkAdapter(session);
             ListenRequests();
             ListenLoadingFinished();
             ListenLoadingFailed();

@@ -17,14 +17,13 @@ namespace Common.Automation
     public static class AutofacConfig
     {
         private static readonly IContainer DefaultContainer;
-        private static readonly ThreadLocal<ILifetimeScope> _mainScope = new(() => DefaultContainer.BeginLifetimeScope());
+        private static readonly ThreadLocal<ILifetimeScope> MainScope = new(() => DefaultContainer.BeginLifetimeScope());
 
         static AutofacConfig()
         {
             var builder = new ContainerBuilder();
 
             RegisterHelpers(builder);
-            RegisterDevToolsSession(builder);
             RegisterAdapters(builder);
             RegisterRequestStrategyFactory(builder);
             RegisterBrowserComponents(builder);
@@ -37,12 +36,12 @@ namespace Common.Automation
         {
             try
             {
-                if (_mainScope.Value == null)
+                if (MainScope.Value == null)
                 {
                     throw new InvalidOperationException($"Main scope is null while trying to resolve type {typeof(T).FullName}");
                 }
 
-                return _mainScope.Value.Resolve<T>();
+                return MainScope.Value.Resolve<T>();
             }
             catch (Exception ex)
             {
@@ -50,19 +49,11 @@ namespace Common.Automation
             }
         }
 
-        private static void RegisterDevToolsSession(ContainerBuilder builder)
-        {
-            var devToolsSessionManager = new DevToolsSessionManager();
-            builder.RegisterInstance(devToolsSessionManager)
-                .As<IDevToolsSessionManager>()
-                .SingleInstance();
-        }
-
         public static void InitializeTestSession(IWebDriver driver, ScenarioContext scenarioContext)
         {
-            _mainScope.Value?.Dispose();
+            MainScope.Value?.Dispose();
 
-            _mainScope.Value = DefaultContainer.BeginLifetimeScope(b =>
+            MainScope.Value = DefaultContainer.BeginLifetimeScope(b =>
             {
                 b.RegisterInstance(driver).As<IWebDriver>().SingleInstance();
                 b.RegisterInstance(scenarioContext).As<ScenarioContext>().SingleInstance();
@@ -72,19 +63,8 @@ namespace Common.Automation
 
         private static void RegisterAdapters(ContainerBuilder builder)
         {
-            builder.Register(c =>
-            {
-                var sessionManager = c.Resolve<IDevToolsSessionManager>();
-                var logger = c.Resolve<LoggerHelper>();
-                return new ChromeNetworkAdapter(sessionManager, logger);
-            }).SingleInstance();
-
-            builder.Register(c =>
-            {
-                var sessionManager = c.Resolve<IDevToolsSessionManager>();
-                var logger = c.Resolve<LoggerHelper>();
-                return new FirefoxNetworkAdapter(sessionManager, logger);
-            }).SingleInstance();
+            builder.Register(c => new ChromeNetworkAdapter()).SingleInstance();
+            builder.Register(c => new FirefoxNetworkAdapter()).SingleInstance();
         }
 
         private static void RegisterHelpers(ContainerBuilder builder)
@@ -120,20 +100,7 @@ namespace Common.Automation
 
         private static void RegisterRequestStrategyFactory(ContainerBuilder builder)
         {
-            //builder.Register(c =>
-            //{
-            //    var chromeNetworkAdapter = c.Resolve<ChromeNetworkAdapter>();
-            //    var firefoxNetworkAdapter = c.Resolve<FirefoxNetworkAdapter>();
-            //    return new NetworkAdapterFactory(chromeNetworkAdapter, firefoxNetworkAdapter);
-            //}).SingleInstance();
             builder.RegisterType<NetworkAdapterFactory>().SingleInstance();
-        }
-
-
-        public static void DisposeCurrentScope()
-        {
-            _mainScope.Value?.Dispose();
-            _mainScope.Value = null;
         }
     }
 }

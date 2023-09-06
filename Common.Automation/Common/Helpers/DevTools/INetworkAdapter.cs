@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using OpenQA.Selenium;
 
 namespace Common.Automation.Common.Helpers.DevTools
 {
@@ -7,6 +8,6 @@ namespace Common.Automation.Common.Helpers.DevTools
         HashSet<string> GetPendingRequests(); 
         string GetStuckRequests();
         void ResetPendingRequests();
-        void Start();
+        void Start(IWebDriver driver);
     }
 }
