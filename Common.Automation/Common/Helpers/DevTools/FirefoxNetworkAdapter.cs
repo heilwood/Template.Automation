@@ -21,10 +21,7 @@ namespace Common.Automation.Common.Helpers.DevTools
             _networkAdapter.RequestWillBeSent += RequestEvent;
             return;
 
-            void RequestEvent(object sender, RequestWillBeSentEventArgs e)
-            {
-                AddRequest(e.Request.Url, e.RequestId);
-            }
+            void RequestEvent(object sender, RequestWillBeSentEventArgs e) => AddRequest(e.Request.Url, e.RequestId);
         }
 
         private void ListenLoadingFinished()
@@ -32,10 +29,7 @@ namespace Common.Automation.Common.Helpers.DevTools
             _networkAdapter.LoadingFinished += LoadingFinishedEvent;
             return;
 
-            void LoadingFinishedEvent(object sender, LoadingFinishedEventArgs e)
-            {
-                RemoveRequest(e.RequestId);
-            }
+            void LoadingFinishedEvent(object sender, LoadingFinishedEventArgs e) => RemoveRequest(e.RequestId);
         }
 
         private void ListenResponseReceived()
@@ -43,10 +37,7 @@ namespace Common.Automation.Common.Helpers.DevTools
             _networkAdapter.ResponseReceived += ResponseReceivedEvent;
             return;
 
-            void ResponseReceivedEvent(object sender, ResponseReceivedEventArgs e)
-            {
-                RemoveRequest(e.RequestId);
-            }
+            void ResponseReceivedEvent(object sender, ResponseReceivedEventArgs e) => RemoveRequest(e.RequestId);
         }
 
         private void ListenLoadingFailed()
@@ -54,10 +45,7 @@ namespace Common.Automation.Common.Helpers.DevTools
             _networkAdapter.LoadingFailed += LoadingFailedEvent;
             return;
 
-            void LoadingFailedEvent(object sender, LoadingFailedEventArgs e)
-            {
-                RemoveRequest(e.RequestId);
-            }
+            void LoadingFailedEvent(object sender, LoadingFailedEventArgs e) => RemoveRequest(e.RequestId);
         }
 
 
