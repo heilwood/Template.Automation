@@ -24,8 +24,7 @@ namespace Common.Automation
             var builder = new ContainerBuilder();
 
             RegisterHelpers(builder);
-            RegisterAdapters(builder);
-            RegisterNetworkAdapterFactory(builder);
+            RegisterNetworkComponents(builder);
             RegisterBrowserComponents(builder);
             RegisterElements(builder);
             
@@ -61,12 +60,6 @@ namespace Common.Automation
             });
         }
 
-        private static void RegisterAdapters(ContainerBuilder builder)
-        {
-            builder.Register(c => new ChromeNetworkAdapter()).SingleInstance();
-            builder.Register(c => new FirefoxNetworkAdapter()).SingleInstance();
-        }
-
         private static void RegisterHelpers(ContainerBuilder builder)
         {
             builder.RegisterType<LoggerHelper>().SingleInstance();
@@ -97,9 +90,21 @@ namespace Common.Automation
             builder.RegisterType<Tab>().InstancePerDependency();
         }
 
-        private static void RegisterNetworkAdapterFactory(ContainerBuilder builder)
+        private static void RegisterNetworkComponents(ContainerBuilder builder)
         {
-            builder.RegisterType<NetworkAdapterFactory>().SingleInstance();
+            builder.RegisterType<ChromeNetworkAdapter>().InstancePerDependency();
+            builder.RegisterType<FirefoxNetworkAdapter>().InstancePerDependency();
+
+            builder.Register(c => new NetworkAdapterFactory(
+                c.Resolve<ChromeNetworkAdapter>(),
+                c.Resolve<FirefoxNetworkAdapter>()
+            )).SingleInstance();
+
+            builder.Register(c =>
+            {
+                var factory = c.Resolve<NetworkAdapterFactory>();
+                return factory.CreateNetworkAdapter();
+            }).As<INetworkAdapter>().InstancePerLifetimeScope();
         }
     }
 }

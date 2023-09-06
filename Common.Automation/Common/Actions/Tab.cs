@@ -7,8 +7,8 @@ namespace Common.Automation.Common.Actions
 {
     public class Tab : ClickElementBase
     {
-        public Tab(IWebDriver driver, NetworkAdapterFactory networkAdapterFactory, LoggerHelper loggerHelper)
-            : base(driver, networkAdapterFactory, loggerHelper)
+        public Tab(IWebDriver driver, INetworkAdapter networkAdapter, LoggerHelper loggerHelper)
+            : base(driver, networkAdapter, loggerHelper)
         {
         }
     }

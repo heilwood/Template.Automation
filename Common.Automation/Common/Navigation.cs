@@ -10,15 +10,15 @@ namespace Common.Automation.Common
     
     public class Navigation : ElementBase
     {
-        public Navigation(IWebDriver driver, NetworkAdapterFactory networkAdapterFactory, LoggerHelper loggerHelper)
-            : base(driver, networkAdapterFactory, loggerHelper)
+        public Navigation(IWebDriver driver, INetworkAdapter networkAdapter, LoggerHelper loggerHelper)
+            : base(driver, networkAdapter, loggerHelper)
         {
         }
 
         public async Task OpenPageAsync(string url)
         {
             var loadUrlTask = Task.Run(() => Driver.Url = url);
-            var startNetworkAdapterTask = Task.Run(() => NetworkAdapterFactory.CreateNetworkAdapter().Start(Driver));
+            var startNetworkAdapterTask = Task.Run(() => NetworkAdapter.Start(Driver));
 
             await Task.WhenAll(loadUrlTask, startNetworkAdapterTask);
 

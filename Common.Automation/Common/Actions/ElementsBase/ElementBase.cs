@@ -13,11 +13,11 @@ namespace Common.Automation.Common.Actions.ElementsBase
         protected IWebDriver Driver;
         protected readonly LoggerHelper LoggerHelper;
         private DateTime _lastRequestTimestamp = DateTime.MinValue;
-        protected readonly NetworkAdapterFactory NetworkAdapterFactory;
+        protected readonly INetworkAdapter NetworkAdapter;
 
-        public ElementBase(IWebDriver driver, NetworkAdapterFactory networkAdapterFactory, LoggerHelper loggerHelper)
+        public ElementBase(IWebDriver driver, INetworkAdapter networkAdapter, LoggerHelper loggerHelper)
         {
-            NetworkAdapterFactory = networkAdapterFactory ?? throw new ArgumentNullException(nameof(networkAdapterFactory));
+            NetworkAdapter = networkAdapter ?? throw new ArgumentNullException(nameof(networkAdapter));
             LoggerHelper = loggerHelper ?? throw new ArgumentNullException(nameof(loggerHelper));
             Driver = driver ?? throw new ArgumentNullException(nameof(driver));
         }
@@ -127,7 +127,7 @@ namespace Common.Automation.Common.Actions.ElementsBase
         private bool ResourceLoadingFinished()
         {
             var coolingPeriod = TimeSpan.FromMilliseconds(800);
-            var pendingRequests = NetworkAdapterFactory.CreateNetworkAdapter().GetPendingRequests();
+            var pendingRequests = NetworkAdapter.GetPendingRequests();
 
             if (!pendingRequests.Any()) return DateTime.Now - _lastRequestTimestamp > coolingPeriod;
             _lastRequestTimestamp = DateTime.Now;
@@ -142,7 +142,7 @@ namespace Common.Automation.Common.Actions.ElementsBase
             }
             catch
             {
-                var stuckRequests = NetworkAdapterFactory.CreateNetworkAdapter().GetStuckRequests();
+                var stuckRequests = NetworkAdapter.GetStuckRequests();
                 throw new Exception($"Requests stuck, you can add _requestUrlsToSkip in RequestTracker.cs and NetworkAdapterHelper.cs: {stuckRequests}");
             }
         }
@@ -152,7 +152,7 @@ namespace Common.Automation.Common.Actions.ElementsBase
             var isFinishedRequests = ResourceLoadingFinished();
             if (isFinishedRequests) return true;
 
-            NetworkAdapterFactory.CreateNetworkAdapter().ResetPendingRequests();
+            NetworkAdapter.ResetPendingRequests();
             return false;
         }
 

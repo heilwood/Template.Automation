@@ -7,8 +7,8 @@ namespace Common.Automation.Common.Actions
 {
     public class TextElement : TextElementBase
     {
-        public TextElement(IWebDriver driver, NetworkAdapterFactory networkAdapterFactory, LoggerHelper loggerHelper)
-            : base(driver, networkAdapterFactory, loggerHelper)
+        public TextElement(IWebDriver driver, INetworkAdapter networkAdapter, LoggerHelper loggerHelper)
+            : base(driver, networkAdapter, loggerHelper)
         {
         }
     }
