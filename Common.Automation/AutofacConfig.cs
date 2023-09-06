@@ -25,7 +25,7 @@ namespace Common.Automation
 
             RegisterHelpers(builder);
             RegisterAdapters(builder);
-            RegisterRequestnetworkAdapterFactory(builder);
+            RegisterNetworkAdapterFactory(builder);
             RegisterBrowserComponents(builder);
             RegisterElements(builder);
             
@@ -93,12 +93,11 @@ namespace Common.Automation
             builder.RegisterType<A>().InstancePerDependency();
             builder.RegisterType<Radio>().InstancePerDependency();
             builder.RegisterType<Window>().InstancePerDependency();
-            builder.RegisterType<Navigation>().InstancePerDependency().PropertiesAutowired();
+            builder.RegisterType<Navigation>().InstancePerDependency();
             builder.RegisterType<Tab>().InstancePerDependency();
         }
 
-
-        private static void RegisterRequestnetworkAdapterFactory(ContainerBuilder builder)
+        private static void RegisterNetworkAdapterFactory(ContainerBuilder builder)
         {
             builder.RegisterType<NetworkAdapterFactory>().SingleInstance();
         }

@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Common.Automation.Common.Browser;
+﻿using Common.Automation.Common.Browser;
 using Common.Automation.Common.Helpers.ScreenShot;
-using Fiddler;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Firefox;
 using TechTalk.SpecFlow;
 
 namespace Common.Automation
