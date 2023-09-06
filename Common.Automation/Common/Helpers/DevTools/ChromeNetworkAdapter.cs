@@ -9,19 +9,13 @@ namespace Common.Automation.Common.Helpers.DevTools
     {
         private volatile NetworkAdapter _networkAdapter;
 
-        //public ChromeNetworkAdapter(IDevToolsSessionManager devToolsSessionManager, LoggerHelper loggerHelper)
-        //    : base(devToolsSessionManager, loggerHelper)
-        //{
-        //}
-
-
         private void SetNetworkAdapter(DevToolsSession session)
         {
             _networkAdapter = session.GetVersionSpecificDomains<DevToolsSessionDomains>().Network;
             _networkAdapter.Enable(new EnableCommandSettings());
         }
 
-        public override void ListenRequests()
+        private void ListenRequests()
         {
             _networkAdapter.RequestWillBeSent += RequestEvent;
             return;
@@ -32,7 +26,7 @@ namespace Common.Automation.Common.Helpers.DevTools
             }
         }
 
-        public override void ListenLoadingFinished()
+        private void ListenLoadingFinished()
         {
             _networkAdapter.LoadingFinished += LoadingFinishedEvent;
             return;
@@ -43,7 +37,7 @@ namespace Common.Automation.Common.Helpers.DevTools
             }
         }
 
-        public override void ListenLoadingFailed()
+        private void ListenLoadingFailed()
         {
             _networkAdapter.LoadingFailed += LoadingFailedEvent;
             return;

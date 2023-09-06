@@ -1,7 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.DevTools;
 using OpenQA.Selenium.DevTools.V85.Network;
-using System;
 using DevToolsSessionDomains = OpenQA.Selenium.DevTools.V85.DevToolsSessionDomains;
 
 namespace Common.Automation.Common.Helpers.DevTools
@@ -10,17 +9,13 @@ namespace Common.Automation.Common.Helpers.DevTools
     {
         private volatile NetworkAdapter _networkAdapter;
 
-        //public FirefoxNetworkAdapter(IDevToolsSessionManager devToolsSessionManager, LoggerHelper loggerHelper) :  base(devToolsSessionManager, loggerHelper)
-        //{
-        //}
-
         private void SetNetworkAdapter(DevToolsSession session)
         {
             _networkAdapter = session.GetVersionSpecificDomains<DevToolsSessionDomains>().Network;
             _networkAdapter.Enable(new EnableCommandSettings());
         }
 
-        public override void ListenRequests()
+        private void ListenRequests()
         {
 
             _networkAdapter.RequestWillBeSent += RequestEvent;
@@ -32,7 +27,7 @@ namespace Common.Automation.Common.Helpers.DevTools
             }
         }
 
-        public override void ListenLoadingFinished()
+        private void ListenLoadingFinished()
         {
             _networkAdapter.LoadingFinished += LoadingFinishedEvent;
             return;
@@ -54,7 +49,7 @@ namespace Common.Automation.Common.Helpers.DevTools
             }
         }
 
-        public override void ListenLoadingFailed()
+        private void ListenLoadingFailed()
         {
             _networkAdapter.LoadingFailed += LoadingFailedEvent;
             return;

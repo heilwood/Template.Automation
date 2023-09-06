@@ -7,8 +7,8 @@ namespace Common.Automation.Common.Actions
 {
     public class DatePicker : ClickElementBase
     {
-        public DatePicker(IWebDriver driver, NetworkAdapterFactory strategyFactory, LoggerHelper loggerHelper)
-            : base(driver, strategyFactory, loggerHelper)
+        public DatePicker(IWebDriver driver, NetworkAdapterFactory networkAdapterFactory, LoggerHelper loggerHelper)
+            : base(driver, networkAdapterFactory, loggerHelper)
         {
         }
 

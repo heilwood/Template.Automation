@@ -14,15 +14,15 @@ namespace Common.Automation.Common
     
     public class Navigation : ElementBase
     {
-        public Navigation(IWebDriver driver, NetworkAdapterFactory strategyFactory, LoggerHelper loggerHelper)
-            : base(driver, strategyFactory, loggerHelper)
+        public Navigation(IWebDriver driver, NetworkAdapterFactory networkAdapterFactory, LoggerHelper loggerHelper)
+            : base(driver, networkAdapterFactory, loggerHelper)
         {
         }
 
         public void OpenPage(string url)
         {
             Driver.Url = url;
-            StrategyFactory.CreateStrategy().Start(Driver);
+            networkAdapterFactory.CreateNetworkAdapter().Start(Driver);
 
             WaitForPageToLoad();
             WaitUntilAllRequestsFinished();

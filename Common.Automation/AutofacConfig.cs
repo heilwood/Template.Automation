@@ -25,7 +25,7 @@ namespace Common.Automation
 
             RegisterHelpers(builder);
             RegisterAdapters(builder);
-            RegisterRequestStrategyFactory(builder);
+            RegisterRequestnetworkAdapterFactory(builder);
             RegisterBrowserComponents(builder);
             RegisterElements(builder);
             
@@ -98,7 +98,7 @@ namespace Common.Automation
         }
 
 
-        private static void RegisterRequestStrategyFactory(ContainerBuilder builder)
+        private static void RegisterRequestnetworkAdapterFactory(ContainerBuilder builder)
         {
             builder.RegisterType<NetworkAdapterFactory>().SingleInstance();
         }

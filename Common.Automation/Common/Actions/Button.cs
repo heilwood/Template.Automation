@@ -7,8 +7,8 @@ namespace Common.Automation.Common.Actions
 {
     public class Button : ClickElementBase
     {
-        public Button(IWebDriver driver, NetworkAdapterFactory strategyFactory, LoggerHelper loggerHelper)
-            : base(driver, strategyFactory, loggerHelper)
+        public Button(IWebDriver driver, NetworkAdapterFactory networkAdapterFactory, LoggerHelper loggerHelper)
+            : base(driver, networkAdapterFactory, loggerHelper)
         {
         }
     }

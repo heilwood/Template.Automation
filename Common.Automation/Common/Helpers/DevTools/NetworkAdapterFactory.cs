@@ -16,7 +16,7 @@ namespace Common.Automation.Common.Helpers.DevTools
         }
 
 
-        public INetworkAdapter CreateStrategy()
+        public INetworkAdapter CreateNetworkAdapter()
         {
             if (ConfigManager.BrowserName == BrowserName.Chrome)
             {

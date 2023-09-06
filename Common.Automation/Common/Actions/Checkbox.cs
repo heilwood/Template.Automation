@@ -7,8 +7,8 @@ namespace Common.Automation.Common.Actions
 {
     public class Checkbox : ClickElementBase
     {
-        public Checkbox(IWebDriver driver, NetworkAdapterFactory strategyFactory, LoggerHelper loggerHelper)
-            : base(driver, strategyFactory, loggerHelper)
+        public Checkbox(IWebDriver driver, NetworkAdapterFactory networkAdapterFactory, LoggerHelper loggerHelper)
+            : base(driver, networkAdapterFactory, loggerHelper)
         {
         }
     }

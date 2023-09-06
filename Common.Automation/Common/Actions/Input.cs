@@ -7,8 +7,8 @@ namespace Common.Automation.Common.Actions
 {
     public class Input : InputElementBase
     {
-        public Input(IWebDriver driver, NetworkAdapterFactory strategyFactory, LoggerHelper loggerHelper)
-            : base(driver, strategyFactory, loggerHelper)
+        public Input(IWebDriver driver, NetworkAdapterFactory networkAdapterFactory, LoggerHelper loggerHelper)
+            : base(driver, networkAdapterFactory, loggerHelper)
         {
         }
     }

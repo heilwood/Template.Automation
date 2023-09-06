@@ -7,8 +7,8 @@ namespace Common.Automation.Common.Actions
 {
     public class Radio : ClickElementBase
     {
-        public Radio(IWebDriver driver, NetworkAdapterFactory strategyFactory, LoggerHelper loggerHelper)
-            : base(driver, strategyFactory, loggerHelper)
+        public Radio(IWebDriver driver, NetworkAdapterFactory networkAdapterFactory, LoggerHelper loggerHelper)
+            : base(driver, networkAdapterFactory, loggerHelper)
         {
         }
     }

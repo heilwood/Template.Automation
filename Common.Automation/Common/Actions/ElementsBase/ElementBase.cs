@@ -13,11 +13,11 @@ namespace Common.Automation.Common.Actions.ElementsBase
         protected IWebDriver Driver;
         protected readonly LoggerHelper LoggerHelper;
         private DateTime _lastRequestTimestamp = DateTime.MinValue;
-        protected readonly NetworkAdapterFactory StrategyFactory;
+        protected readonly NetworkAdapterFactory networkAdapterFactory;
 
-        public ElementBase(IWebDriver driver, NetworkAdapterFactory strategyFactory, LoggerHelper loggerHelper)
+        public ElementBase(IWebDriver driver, NetworkAdapterFactory networkAdapterFactory, LoggerHelper loggerHelper)
         {
-            StrategyFactory = strategyFactory ?? throw new ArgumentNullException(nameof(strategyFactory));
+            networkAdapterFactory = networkAdapterFactory ?? throw new ArgumentNullException(nameof(networkAdapterFactory));
             LoggerHelper = loggerHelper ?? throw new ArgumentNullException(nameof(loggerHelper));
             Driver = driver ?? throw new ArgumentNullException(nameof(driver));
         }
@@ -127,7 +127,7 @@ namespace Common.Automation.Common.Actions.ElementsBase
         private bool ResourceLoadingFinished()
         {
             var coolingPeriod = TimeSpan.FromMilliseconds(800);
-            var pendingRequests = StrategyFactory.CreateStrategy().GetPendingRequests();
+            var pendingRequests = networkAdapterFactory.CreateNetworkAdapter().GetPendingRequests();
 
             if (!pendingRequests.Any()) return DateTime.Now - _lastRequestTimestamp > coolingPeriod;
             _lastRequestTimestamp = DateTime.Now;
@@ -142,7 +142,7 @@ namespace Common.Automation.Common.Actions.ElementsBase
             }
             catch
             {
-                var stuckRequests = StrategyFactory.CreateStrategy().GetStuckRequests();
+                var stuckRequests = networkAdapterFactory.CreateNetworkAdapter().GetStuckRequests();
                 throw new Exception($"Requests stuck, you can add _requestUrlsToSkip in RequestTracker.cs and NetworkAdapterHelper.cs: {stuckRequests}");
             }
         }
