@@ -1,7 +1,6 @@
 ﻿using Common.Automation.Common;
 using Common.Automation.Common.Helpers.DataManager;
 using Common.Automation.Common.TestData;
-using FluentAssertions;
 using TechTalk.SpecFlow;
 
 namespace YourProjectName.Automation.Pages.Home.Pet_Insurance

@@ -1,7 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.DevTools;
 using OpenQA.Selenium.DevTools.V116.Network;
-using System.Collections.Generic;
 using DevToolsSessionDomains = OpenQA.Selenium.DevTools.V116.DevToolsSessionDomains;
 
 namespace Common.Automation.Common.Helpers.DevTools

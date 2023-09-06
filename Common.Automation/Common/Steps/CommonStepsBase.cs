@@ -1,5 +1,4 @@
-﻿using Common.Automation.Common.Locators;
-using FluentAssertions;
+﻿using FluentAssertions;
 using TechTalk.SpecFlow;
 
 namespace Common.Automation.Common.Steps

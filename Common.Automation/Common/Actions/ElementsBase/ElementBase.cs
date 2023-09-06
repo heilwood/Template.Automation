@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using Common.Automation.Common.Helpers;
 using Common.Automation.Common.Helpers.DevTools;
 using OpenQA.Selenium;
