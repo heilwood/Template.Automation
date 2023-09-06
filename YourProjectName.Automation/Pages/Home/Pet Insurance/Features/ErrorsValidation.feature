@@ -1,9 +1,12 @@
 ﻿Feature: ErrorsValidation
 
-#SIMPLE EXAMPLE
-Scenario: Pet Insurance: Personal code is required error validation
+#STEPS which will be executed for all scenarios
+Background: 
 	Given I have opened IF insurance home page
 	And I have selected 'Pirkt' from category 'Mājdzīvniekam'
+
+#SIMPLE EXAMPLE
+Scenario: Pet Insurance: Personal code is required error validation
 	And I have selected pet 'Kaķis'
 	And I have selected breed 'Birmietis'
 	And I have selected date of birth day '1' of current month
@@ -13,8 +16,6 @@ Scenario: Pet Insurance: Personal code is required error validation
 
 #TEST DATA EXAMPLE
 Scenario Outline: Pet Insurance: Incorrect phone and personal number error validation 
-	Given I have opened IF insurance home page
-	And I have selected 'Pirkt' from category 'Mājdzīvniekam'
 	And I have selected pet '<PetType>'
 	And I have filled information about pet using data with name '<DataName>'
 	When I press [Calculate Price] button
