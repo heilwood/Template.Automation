@@ -144,7 +144,7 @@ namespace Common.Automation.Common.ElementActions.ElementsBase
             catch
             {
                 var stuckRequests = NetworkAdapter.GetStuckRequests();
-                throw new Exception($"Requests stuck, you can add _requestUrlsToSkip in RequestTracker.cs and NetworkAdapterHelper.cs: {stuckRequests}");
+                throw new Exception($"Requests stuck, you can add _requestUrlsToSkip in NetworkAdapterBase.cs: {stuckRequests}");
             }
         }
 
