@@ -56,9 +56,5 @@ namespace Common.Automation.Common.Helpers.DevTools
             ListenLoadingFinished();
             ListenLoadingFailed();
         }
-
-
     }
-
-
 }

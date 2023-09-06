@@ -19,8 +19,10 @@ namespace Common.Automation.Common.Helpers.DataManager
             var fullPath = Path.Combine(folderPath, JsonFilePath);
             var scriptTemplateJson = File.ReadAllText(fullPath, Encoding.UTF8);
             var template = JsonConvert.DeserializeObject<List<T>>(scriptTemplateJson);
-            var data = template.First(item => item.DataName.Equals(name, StringComparison.InvariantCultureIgnoreCase));
-            return data;
+            var data = template.FirstOrDefault(item => item.DataName.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+
+            return data ?? throw new Exception($"Data with name {name} not found in {JsonFilePath}");
         }
+
     }
 }

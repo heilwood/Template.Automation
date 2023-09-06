@@ -6,8 +6,8 @@ namespace Common.Automation.Common.Helpers.DevTools
 {
     public abstract class NetworkAdapterBase : INetworkAdapter
     {
-        protected Dictionary<string, string> PendingRequests = new();
         private readonly List<string> _urLsToSkip = new() { ":443", "blob:", "cookielaw", "recaptcha", "data:", ".ads.", "track", "collect", "outlook", "analytics", "google", "facebook", "bing", "giosg", "data.microsoft" };
+        protected Dictionary<string, string> PendingRequests = new();
 
         protected const int MaxRequestIdLength = 20;
         protected readonly object LockObject = new();
@@ -52,7 +52,6 @@ namespace Common.Automation.Common.Helpers.DevTools
                 PendingRequests[requestId] = requestUrl;
             }
         }
-
 
         public void RemoveRequest(string requestId)
         {
