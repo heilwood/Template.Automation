@@ -7,6 +7,7 @@ namespace Common.Automation.Common.Helpers.DevTools
     {
         HashSet<string> GetPendingRequests(); 
         string GetStuckRequests();
+        void ResetPendingRequests();
         void Start(IWebDriver driver);
     }
 }

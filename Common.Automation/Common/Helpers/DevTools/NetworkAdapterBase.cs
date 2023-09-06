@@ -35,6 +35,14 @@ namespace Common.Automation.Common.Helpers.DevTools
             return stuckUrls;
         }
 
+        public void ResetPendingRequests()
+        {
+            lock (LockObject)
+            {
+                PendingRequests = new Dictionary<string, string>();
+            }
+        }
+
         public void AddRequest(string requestUrl, string requestId)
         {
             if (ShouldSkipUrl(requestUrl)) return;
@@ -45,6 +53,7 @@ namespace Common.Automation.Common.Helpers.DevTools
                 PendingRequests[requestId] = requestUrl;
             }
         }
+
 
         public void RemoveRequest(string requestId)
         {

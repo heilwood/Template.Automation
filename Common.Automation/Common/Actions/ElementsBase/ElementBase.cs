@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Common.Automation.Common.Helpers;
 using Common.Automation.Common.Helpers.DevTools;
 using OpenQA.Selenium;
@@ -138,12 +139,33 @@ namespace Common.Automation.Common.Actions.ElementsBase
         {
             try
             {
-                Wait(Driver, 30).Until((d) => ResourceLoadingFinished());
+                Wait(Driver, 30).Until(_ => ResourceLoadingFinished());
             }
             catch
             {
                 var stuckRequests = NetworkAdapterFactory.CreateNetworkAdapter().GetStuckRequests();
                 throw new Exception($"Requests stuck, you can add _requestUrlsToSkip in RequestTracker.cs and NetworkAdapterHelper.cs: {stuckRequests}");
+            }
+        }
+
+        public bool IsPendingRequestsEmpty()
+        {
+            var isFinishedRequests = ResourceLoadingFinished();
+            if (isFinishedRequests) return true;
+
+            NetworkAdapterFactory.CreateNetworkAdapter().ResetPendingRequests();
+            return false;
+        }
+
+        public void SynchronizePendingRequests()
+        {
+            try
+            {
+                Wait(Driver, 30).Until(_ => IsPendingRequestsEmpty());
+            }
+            catch (WebDriverTimeoutException)
+            {
+                throw new WebDriverTimeoutException($"Can't synchronize requests, some requests still in PendingRequests object in NetworkAdapterBase.cs");
             }
         }
     }

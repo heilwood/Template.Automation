@@ -1,4 +1,5 @@
-﻿using Common.Automation.Common.Actions.ElementsBase;
+﻿using System.Threading.Tasks;
+using Common.Automation.Common.Actions.ElementsBase;
 using Common.Automation.Common.Helpers;
 using Common.Automation.Common.Helpers.DevTools;
 using OpenQA.Selenium;
@@ -14,13 +15,15 @@ namespace Common.Automation.Common
         {
         }
 
-        public void OpenPage(string url)
+        public async Task OpenPageAsync(string url)
         {
-            Driver.Url = url;
-            NetworkAdapterFactory.CreateNetworkAdapter().Start(Driver);
+            var loadUrlTask = Task.Run(() => Driver.Url = url);
+            var startNetworkAdapterTask = Task.Run(() => NetworkAdapterFactory.CreateNetworkAdapter().Start(Driver));
+
+            await Task.WhenAll(loadUrlTask, startNetworkAdapterTask);
 
             WaitForPageToLoad();
-            WaitUntilAllRequestsFinished();
+            SynchronizePendingRequests();
             LoggerHelper.Log().Information($"Url name: {url}");
         }
 
