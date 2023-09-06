@@ -13,11 +13,11 @@ namespace Common.Automation.Common.Actions.ElementsBase
         protected IWebDriver Driver;
         protected readonly LoggerHelper LoggerHelper;
         private DateTime _lastRequestTimestamp = DateTime.MinValue;
-        protected readonly NetworkAdapterFactory networkAdapterFactory;
+        protected readonly NetworkAdapterFactory NetworkAdapterFactory;
 
         public ElementBase(IWebDriver driver, NetworkAdapterFactory networkAdapterFactory, LoggerHelper loggerHelper)
         {
-            networkAdapterFactory = networkAdapterFactory ?? throw new ArgumentNullException(nameof(networkAdapterFactory));
+            NetworkAdapterFactory = networkAdapterFactory ?? throw new ArgumentNullException(nameof(networkAdapterFactory));
             LoggerHelper = loggerHelper ?? throw new ArgumentNullException(nameof(loggerHelper));
             Driver = driver ?? throw new ArgumentNullException(nameof(driver));
         }
@@ -127,7 +127,7 @@ namespace Common.Automation.Common.Actions.ElementsBase
         private bool ResourceLoadingFinished()
         {
             var coolingPeriod = TimeSpan.FromMilliseconds(800);
-            var pendingRequests = networkAdapterFactory.CreateNetworkAdapter().GetPendingRequests();
+            var pendingRequests = NetworkAdapterFactory.CreateNetworkAdapter().GetPendingRequests();
 
             if (!pendingRequests.Any()) return DateTime.Now - _lastRequestTimestamp > coolingPeriod;
             _lastRequestTimestamp = DateTime.Now;
@@ -142,7 +142,7 @@ namespace Common.Automation.Common.Actions.ElementsBase
             }
             catch
             {
-                var stuckRequests = networkAdapterFactory.CreateNetworkAdapter().GetStuckRequests();
+                var stuckRequests = NetworkAdapterFactory.CreateNetworkAdapter().GetStuckRequests();
                 throw new Exception($"Requests stuck, you can add _requestUrlsToSkip in RequestTracker.cs and NetworkAdapterHelper.cs: {stuckRequests}");
             }
         }

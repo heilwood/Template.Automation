@@ -1,9 +1,4 @@
-﻿using Common.Automation.Common.Actions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace Common.Automation.Common.Browser
 {
@@ -11,11 +6,7 @@ namespace Common.Automation.Common.Browser
     {
         public static BrowserName ParseBrowserName(string browserName)
         {
-            if (Enum.TryParse(browserName, true, out BrowserName browserType))
-            {
-                return browserType;
-            }
-            return BrowserName.Unknown;
+            return Enum.TryParse(browserName, true, out BrowserName browserType) ? browserType : BrowserName.Chrome;
         }
     }
 }

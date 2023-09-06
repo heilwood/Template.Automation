@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Common.Automation.Common.Actions.ElementsBase;
+﻿using Common.Automation.Common.Actions.ElementsBase;
 using Common.Automation.Common.Helpers;
 using Common.Automation.Common.Helpers.DevTools;
 using OpenQA.Selenium;
@@ -22,7 +17,7 @@ namespace Common.Automation.Common
         public void OpenPage(string url)
         {
             Driver.Url = url;
-            networkAdapterFactory.CreateNetworkAdapter().Start(Driver);
+            NetworkAdapterFactory.CreateNetworkAdapter().Start(Driver);
 
             WaitForPageToLoad();
             WaitUntilAllRequestsFinished();
