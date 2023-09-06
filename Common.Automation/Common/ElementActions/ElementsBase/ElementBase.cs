@@ -4,9 +4,10 @@ using System.Linq;
 using Common.Automation.Common.Helpers;
 using Common.Automation.Common.Helpers.DevTools;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 
-namespace Common.Automation.Common.Actions.ElementsBase
+namespace Common.Automation.Common.ElementActions.ElementsBase
 {
     public class ElementBase
     {
@@ -27,9 +28,9 @@ namespace Common.Automation.Common.Actions.ElementsBase
             return new WebDriverWait(driver, TimeSpan.FromSeconds(seconds));
         }
 
-        public OpenQA.Selenium.Interactions.Actions Actions(IWebDriver driver)
+        public Actions Actions(IWebDriver driver)
         {
-            return new OpenQA.Selenium.Interactions.Actions(driver);
+            return new Actions(driver);
         }
 
         public void ScrollIntoView(IWebElement elem)

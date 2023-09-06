@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using Common.Automation.Common;
-using Common.Automation.Common.Actions;
 using Common.Automation.Common.Browser.Settings;
 using Common.Automation.Common.Browser;
 using Common.Automation.Common.Helpers.DevTools;
@@ -10,6 +9,7 @@ using OpenQA.Selenium;
 using System.Threading;
 using TechTalk.SpecFlow;
 using System;
+using Common.Automation.Common.ElementActions;
 
 
 namespace Common.Automation

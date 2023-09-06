@@ -1,7 +1,7 @@
 ﻿using Common.Automation.Common;
 using Common.Automation.Common.Helpers.DataManager;
-using Common.Automation.Common.TestData;
 using TechTalk.SpecFlow;
+using YourProjectName.Automation.Pages.Home.Pet_Insurance.TestData;
 
 namespace YourProjectName.Automation.Pages.Home.Pet_Insurance
 {

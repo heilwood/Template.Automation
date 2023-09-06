@@ -2,7 +2,7 @@
 using Common.Automation.Common.Helpers.DevTools;
 using OpenQA.Selenium;
 
-namespace Common.Automation.Common.Actions.ElementsBase
+namespace Common.Automation.Common.ElementActions.ElementsBase
 {
     public class ClickElementBase : ElementBase
     {
