@@ -4,17 +4,18 @@ namespace Common.Automation.Common
 {
     public class StepBase
     {
-        public Button Button => AutofacConfig.Resolve<Button>();
-        public Checkbox Checkbox => AutofacConfig.Resolve<Checkbox>();
-        public DatePicker DatePicker => AutofacConfig.Resolve<DatePicker>();
-        public Div Div => AutofacConfig.Resolve<Div>();
-        public Input Input => AutofacConfig.Resolve<Input>();
-        public Dropdown Dropdown => AutofacConfig.Resolve<Dropdown>();
-        public TextElement TextElement => AutofacConfig.Resolve<TextElement>();
-        public A A => AutofacConfig.Resolve<A>();
-        public Radio Radio => AutofacConfig.Resolve<Radio>();
-        public Window Window => AutofacConfig.Resolve<Window>();
-        public Navigation Navigation => AutofacConfig.Resolve<Navigation>();
-        public Tab Tab => AutofacConfig.Resolve<Tab>();
+        public Button Button { get; } = AutofacConfig.Resolve<Button>();
+        public Checkbox Checkbox { get; } = AutofacConfig.Resolve<Checkbox>();
+        public DatePicker DatePicker { get; } = AutofacConfig.Resolve<DatePicker>();
+        public Div Div { get; } = AutofacConfig.Resolve<Div>();
+        public Input Input { get; } = AutofacConfig.Resolve<Input>();
+        public Dropdown Dropdown { get; } = AutofacConfig.Resolve<Dropdown>();
+        public TextElement TextElement { get; } = AutofacConfig.Resolve<TextElement>();
+        public A A { get; } = AutofacConfig.Resolve<A>();
+        public Radio Radio { get; } = AutofacConfig.Resolve<Radio>();
+        public Window Window { get; } = AutofacConfig.Resolve<Window>();
+        public Navigation Navigation { get; } = AutofacConfig.Resolve<Navigation>();
+        public Tab Tab { get; } = AutofacConfig.Resolve<Tab>();
+
     }
 }
