@@ -34,7 +34,7 @@ namespace Common.Automation
         [AfterScenario]
         public void AfterScenario()
         {
-            if (_scenarioContext != null)
+            if (_scenarioContext.TestError != null)
             {
                 var screenShotHelper = AutofacConfig.Resolve<ScreenShotHelper>();
                 screenShotHelper.CurrentViewScreenShot();
