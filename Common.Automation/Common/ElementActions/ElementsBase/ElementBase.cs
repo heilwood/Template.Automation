@@ -55,26 +55,22 @@ namespace Common.Automation.Common.ElementActions.ElementsBase
 
         #region Element State
 
+        public bool IsDisplayed(IWebElement elem) => elem.Displayed;
+ 
         public bool IsDisplayed(By by)
         {
             var elements = Driver.FindElements(by);
-            return elements.Count > 0 && elements[0].Displayed;
+            return elements.Count > 0 && IsDisplayed(elements[0]);
         }
 
-        public bool IsPresent(By by)
-        {
-            return Driver.FindElements(by).Count > 0;
-        }
+        public bool IsPresent(By by) => Driver.FindElements(by).Count > 0;
 
         #endregion
 
         #region Wait
         public WebDriverWait Wait(IWebDriver driver, int seconds = 15) => new(driver, TimeSpan.FromSeconds(seconds));
 
-        public void WaitUntilVisible(IWebElement elem, int seconds = 15)
-        {
-            Wait(Driver, seconds).Until(_ => elem.Displayed);
-        }
+        public void WaitUntilVisible(IWebElement elem, int seconds = 15) => Wait(Driver, seconds).Until(_ => IsDisplayed(elem));
 
         public void WaitUntilVisible(By by, int seconds = 15)
         {
