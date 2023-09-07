@@ -1,5 +1,6 @@
 ﻿using Common.Automation.Common;
 using Common.Automation.Common.Helpers.DataManager;
+using Common.Automation.Common.Locators;
 using TechTalk.SpecFlow;
 using YourProjectName.Automation.Pages.Home.Pet_Insurance.TestData;
 
@@ -10,10 +11,12 @@ namespace YourProjectName.Automation.Pages.Home.Pet_Insurance
     {
         private readonly PetInsuranceLocators _petInsuranceLocators;
         private readonly TestDataManager<PetsDataModel> _petsDataManager;
-        public PetInsuranceSteps(PetInsuranceLocators petInsuranceLocators, TestDataManager<PetsDataModel> petsDataManager)
+        private readonly CommonLocatorsBase _commonLocatorsBase;
+        public PetInsuranceSteps(PetInsuranceLocators petInsuranceLocators, CommonLocatorsBase commonLocatorsBase, TestDataManager<PetsDataModel> petsDataManager)
         {
             _petInsuranceLocators = petInsuranceLocators;
             _petsDataManager = petsDataManager;
+            _commonLocatorsBase = commonLocatorsBase;
         }
 
         [Given(@"I have selected pet '(.*)'")]
@@ -25,7 +28,7 @@ namespace YourProjectName.Automation.Pages.Home.Pet_Insurance
         [Given(@"I have selected breed '(.*)'")]
         public void SelectBreed(string breed)
         {
-            var value = Button.ByChildContainsTxt(breed);
+            var value = _commonLocatorsBase.ByChildContainsTxt(breed);
             Dropdown.Click(_petInsuranceLocators.BreedInput);
             Input.ManualType(_petInsuranceLocators.BreedInput, breed);
             Button.Click(value);

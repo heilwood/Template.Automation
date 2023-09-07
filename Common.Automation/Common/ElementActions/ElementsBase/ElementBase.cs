@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Common.Automation.Common.Helpers;
 using Common.Automation.Common.Helpers.DevTools;
+using Common.Automation.Common.Locators;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Common.Automation.Common.ElementActions.ElementsBase
 {
@@ -23,22 +25,10 @@ namespace Common.Automation.Common.ElementActions.ElementsBase
             Driver = driver ?? throw new ArgumentNullException(nameof(driver));
         }
 
-        public WebDriverWait Wait(IWebDriver driver, int seconds = 15)
-        {
-            return new WebDriverWait(driver, TimeSpan.FromSeconds(seconds));
-        }
+        public Actions Actions(IWebDriver driver) => new(driver);
+        public void ScrollIntoView(IWebElement elem) => (Driver as IJavaScriptExecutor)?.ExecuteScript("arguments[0].scrollIntoView({ block: 'center' })", elem);
 
-        public Actions Actions(IWebDriver driver)
-        {
-            return new Actions(driver);
-        }
-
-        public void ScrollIntoView(IWebElement elem)
-        {
-            var js = (IJavaScriptExecutor)Driver;
-            js.ExecuteScript("arguments[0].scrollIntoView({ block: 'center' })", elem);
-        }
-
+        #region Element Finder
         public IWebElement GetElement(By by)
         {
             WaitUntilPresent(by);
@@ -47,10 +37,41 @@ namespace Common.Automation.Common.ElementActions.ElementsBase
             return elem;
         }
 
+        public IReadOnlyCollection<IWebElement> GetElements(By by)
+        {
+            WaitUntilPresent(by);
+            var elements = Driver.FindElements(by);
+            ScrollIntoView(elements[0]);
+
+            return elements;
+        }
+
+        public IWebElement GetChildByText(By parent, string childTxt)
+        {
+            var parentElement = GetElement(parent);
+            var elem = parentElement.FindElement(By.XPath($".//*[contains(text(),'{childTxt}')]"));
+
+            return elem;
+        }
+        #endregion
+
+        #region Element State
+
+        public bool IsDisplayed(By by)
+        {
+            var elements = Driver.FindElements(by);
+            return elements.Count > 0 && elements[0].Displayed;
+        }
+
         public bool IsPresent(By by)
         {
             return Driver.FindElements(by).Count > 0;
         }
+
+        #endregion
+
+        #region Wait
+        public WebDriverWait Wait(IWebDriver driver, int seconds = 15) => new(driver, TimeSpan.FromSeconds(seconds));
 
         public void WaitUntilVisible(IWebElement elem, int seconds = 15)
         {
@@ -68,12 +89,6 @@ namespace Common.Automation.Common.ElementActions.ElementsBase
             {
                 throw new NoSuchElementException($"Element is not visible: {by}");
             }
-        }
-
-        public bool IsDisplayed(By by)
-        {
-            var elements = Driver.FindElements(by);
-            return elements.Count > 0 && elements[0].Displayed;
         }
 
         public void WaitForPageToLoad()
@@ -102,29 +117,9 @@ namespace Common.Automation.Common.ElementActions.ElementsBase
             }
         }
 
-        public IReadOnlyCollection<IWebElement> GetElements(By by)
-        {
-            WaitUntilPresent(by);
-            var elements = Driver.FindElements(by);
-            ScrollIntoView(elements[0]);
+        #endregion
 
-            return elements;
-        }
-
-        public IWebElement GetChildByText(By parent, string childTxt)
-        {
-            var parentElement = GetElement(parent);
-            var elem = parentElement.FindElement(ByChildContainsTxt(childTxt));
- 
-            return elem;
-        }
-
-        //TODO: Move to CommonLocatorBase
-        public By ByChildContainsTxt(string text)
-        {
-            var by = By.XPath($".//*[contains(text(),'{text}')]");
-            return by;
-        }
+        #region Network Synchronizer
 
         private bool ResourceLoadingFinished()
         {
@@ -169,5 +164,7 @@ namespace Common.Automation.Common.ElementActions.ElementsBase
                 throw new WebDriverTimeoutException($"Can't synchronize requests, some requests still in PendingRequests object in NetworkAdapterBase.cs");
             }
         }
+
+        #endregion
     }
 }
