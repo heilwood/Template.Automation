@@ -12,7 +12,7 @@ namespace Common.Automation.Common.Steps
         {
             Navigation.Refresh();
             Window.WaitForPageToLoad();
-            Window.WaitUntilAllRequestsFinished();
+            Window.SynchronizePendingRequests();
         }
 
         [Then(@"Current url should contains '(.*)'")]
