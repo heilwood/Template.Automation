@@ -2,6 +2,7 @@
 <TestProfile xmlns="http://www.specflow.org/schemas/plus/TestProfile/1.5">
   <Settings projectName="YourProjectName.Automation"  outputFolder="TestResults" />
   <Server serverUrl="http://swc195240.europe.ifint.biz:6365" publishResults="true" />
+  <Environment testThreadIsolation="SharedAppDomain"/>
   <!--<VSTest testRetryResults="Unified" passRateAbsolute="1"/>-->
   <Report>
     <Template name="ReportTemplates\ClientJsonTemplateSpecRun3.cshtml" outputName="TestResults.json" />

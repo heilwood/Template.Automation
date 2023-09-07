@@ -1,7 +1,4 @@
 ﻿{
-  "runtime": {
-    "testThreadIsolation": "SharedAppDomain"
-  },
   "stepAssemblies": [
     {
       "assembly": "Common.Automation"

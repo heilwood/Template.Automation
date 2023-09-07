@@ -54,7 +54,7 @@ namespace Common.Automation.Common.ElementActions.ElementsBase
 
         public void WaitUntilVisible(IWebElement elem, int seconds = 15)
         {
-            Wait(Driver, seconds).Until(driver => elem.Displayed);
+            Wait(Driver, seconds).Until(_ => elem.Displayed);
         }
 
         public void WaitUntilVisible(By by, int seconds = 15)
@@ -119,6 +119,7 @@ namespace Common.Automation.Common.ElementActions.ElementsBase
             return elem;
         }
 
+        //TODO: Move to CommonLocatorBase
         public By ByChildContainsTxt(string text)
         {
             var by = By.XPath($".//*[contains(text(),'{text}')]");

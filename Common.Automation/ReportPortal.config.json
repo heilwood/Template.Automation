@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/reportportal/agent-net-vstest/master/src/ReportPortal.VSTest.TestLogger/ReportPortal.config.schema",
+  "$schema": "https://raw.githubusercontent.com/reportportal/agent-net-specflow/master/src/ReportPortal.SpecFlowPlugin/ReportPortal.config.schema",
   "enabled": true,
   "server": {
     "url": "http://10.162.46.138:8080/api/v1/",
@@ -11,7 +11,7 @@
   "launch": {
     "name": "default-launch-name",
     "description": "this is description",
-    "debugMode": false,
+    "debugMode": true,
     "attributes": [ "TAG1", "TAG2" ]
   }
 }
