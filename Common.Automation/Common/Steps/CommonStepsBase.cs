@@ -18,7 +18,7 @@ namespace Common.Automation.Common.Steps
         [Then(@"Current url should contains '(.*)'")]
         public void CurrentUrlShouldContains(string text)
         {
-            var url = Window.GetCurrentUrl();
+            var url = Window.GetUrl();
             url.Should().Contain(text);
         }
 

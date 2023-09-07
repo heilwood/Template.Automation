@@ -12,7 +12,7 @@ namespace Common.Automation.Common.ElementActions
         {
         }
 
-        public string GetCurrentUrl()
+        public string GetUrl()
         {
             return Driver.Url;
         }
