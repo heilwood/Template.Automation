@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Common.Automation.Common.Helpers;
 using Common.Automation.Common.Helpers.DevTools;
-using Common.Automation.Common.Locators;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Common.Automation.Common.ElementActions.ElementsBase
 {
