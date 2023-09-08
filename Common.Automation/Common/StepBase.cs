@@ -2,6 +2,7 @@
 
 namespace Common.Automation.Common
 {
+    //TODO: Is not good idea to use Service Locator pattern for real life apps, in our case it fits ok.
     public class StepBase
     {
         public Button Button { get; } = AutofacConfig.Resolve<Button>();
