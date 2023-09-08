@@ -1,6 +1,6 @@
 ﻿Feature: ErrorsValidation
 
-#STEPS which will be executed for all scenarios
+#STEPS which will be executed before scenarios
 Background: 
 	Given I have opened IF insurance home page
 	And I have selected 'Pirkt' from category 'Mājdzīvniekam'
