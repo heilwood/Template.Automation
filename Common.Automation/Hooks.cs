@@ -12,6 +12,8 @@ namespace Common.Automation
         private readonly BrowserFactory _browserFactory;
         private readonly ScenarioContext _scenarioContext;
 
+
+        //TODO: Remove Specflow DI to resolve all dependencies using autofac. To avoid usage of Service Locator pattern
         protected Hooks(ScenarioContext scenarioContext) {
             _browserFactory = AutofacConfig.Resolve<BrowserFactory>();
             _scenarioContext = scenarioContext;
