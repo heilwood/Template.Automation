@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using BoDi;
+using FluentAssertions;
 using TechTalk.SpecFlow;
 
 namespace Common.Automation.Common.Steps
@@ -6,6 +7,10 @@ namespace Common.Automation.Common.Steps
     [Binding]
     public sealed class CommonStepsBase : StepBase
     {
+        public CommonStepsBase(IObjectContainer container) : base(container)
+        {
+        }
+
         [When(@"I Refresh the page")]
         [Given(@"I have Refreshed the page")]
         public void RefreshPage()

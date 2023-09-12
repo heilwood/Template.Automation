@@ -1,22 +1,27 @@
-﻿using Common.Automation.Common.ElementActions;
+﻿using BoDi;
+using Common.Automation.Common.ElementActions;
 
 namespace Common.Automation.Common
 {
-    //TODO: Is not good idea to use Service Locator pattern for real life apps, in our case it fits ok.
     public class StepBase
     {
-        public Button Button { get; } = AutofacConfig.Resolve<Button>();
-        public Checkbox Checkbox { get; } = AutofacConfig.Resolve<Checkbox>();
-        public DatePicker DatePicker { get; } = AutofacConfig.Resolve<DatePicker>();
-        public Div Div { get; } = AutofacConfig.Resolve<Div>();
-        public Input Input { get; } = AutofacConfig.Resolve<Input>();
-        public Dropdown Dropdown { get; } = AutofacConfig.Resolve<Dropdown>();
-        public TextElement TextElement { get; } = AutofacConfig.Resolve<TextElement>();
-        public A A { get; } = AutofacConfig.Resolve<A>();
-        public Radio Radio { get; } = AutofacConfig.Resolve<Radio>();
-        public Window Window { get; } = AutofacConfig.Resolve<Window>();
-        public Navigation Navigation { get; } = AutofacConfig.Resolve<Navigation>();
-        public Tab Tab { get; } = AutofacConfig.Resolve<Tab>();
+        readonly IObjectContainer _container;
+        public StepBase(IObjectContainer container)
+        {
+            _container = container;
+        }
 
+        public Button Button => _container.Resolve<Button>();
+        public Checkbox Checkbox => _container.Resolve<Checkbox>();
+        public DatePicker DatePicker => _container.Resolve<DatePicker>();
+        public Div Div => _container.Resolve<Div>();
+        public Input Input => _container.Resolve<Input>();
+        public Dropdown Dropdown => _container.Resolve<Dropdown>();
+        public TextElement TextElement => _container.Resolve<TextElement>();
+        public A A => _container.Resolve<A>();
+        public Radio Radio => _container.Resolve<Radio>();
+        public Window Window => _container.Resolve<Window>();
+        public Navigation Navigation => _container.Resolve<Navigation>();
+        public Tab Tab => _container.Resolve<Tab>();
     }
 }

@@ -1,4 +1,5 @@
-﻿using Common.Automation;
+﻿using BoDi;
+using Common.Automation;
 using Common.Automation.Common;
 using Common.Automation.Common.Locators;
 using TechTalk.SpecFlow;
@@ -11,7 +12,7 @@ namespace YourProjectName.Automation.Pages.Home
         private readonly HomeLocators _homeLocators;
         private readonly CommonLocatorsBase _commonLocatorsBase;
 
-        public HomeSteps(HomeLocators homeLocators, CommonLocatorsBase commonLocatorsBase)
+        public HomeSteps(HomeLocators homeLocators, CommonLocatorsBase commonLocatorsBase, IObjectContainer container) : base(container)
         {
             _homeLocators = homeLocators;
             _commonLocatorsBase = commonLocatorsBase;

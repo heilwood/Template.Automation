@@ -4,12 +4,18 @@ namespace Common.Automation.Common.Helpers
 {
     public class LoggerHelper
     {
-        public Serilog.Core.Logger Log()
+        private static readonly Serilog.Core.Logger Logger;
+
+        static LoggerHelper()
         {
-            var log = new LoggerConfiguration()
+            Logger = new LoggerConfiguration()
                 .WriteTo.Console()
                 .CreateLogger();
-            return log;
+        }
+
+        public Serilog.Core.Logger Log()
+        {
+            return Logger;
         }
     }
 }

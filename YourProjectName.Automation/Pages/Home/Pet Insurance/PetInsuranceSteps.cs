@@ -1,4 +1,5 @@
-﻿using Common.Automation.Common;
+﻿using BoDi;
+using Common.Automation.Common;
 using Common.Automation.Common.Helpers.DataManager;
 using Common.Automation.Common.Locators;
 using TechTalk.SpecFlow;
@@ -12,7 +13,7 @@ namespace YourProjectName.Automation.Pages.Home.Pet_Insurance
         private readonly PetInsuranceLocators _petInsuranceLocators;
         private readonly TestDataManager<PetsDataModel> _petsDataManager;
         private readonly CommonLocatorsBase _commonLocatorsBase;
-        public PetInsuranceSteps(PetInsuranceLocators petInsuranceLocators, CommonLocatorsBase commonLocatorsBase, TestDataManager<PetsDataModel> petsDataManager)
+        public PetInsuranceSteps(PetInsuranceLocators petInsuranceLocators, CommonLocatorsBase commonLocatorsBase, TestDataManager<PetsDataModel> petsDataManager, IObjectContainer container) : base(container)
         {
             _petInsuranceLocators = petInsuranceLocators;
             _petsDataManager = petsDataManager;
