@@ -1,5 +1,4 @@
-﻿using Automation.Common;
-using BoDi;
+﻿using BoDi;
 using Common.Automation.Common.Browser;
 using Common.Automation.Common.Helpers.ScreenShot;
 using OpenQA.Selenium;

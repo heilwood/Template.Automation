@@ -1,5 +1,4 @@
-﻿
-using BoDi;
+﻿using BoDi;
 using Common.Automation.Common;
 using Common.Automation.Common.Browser;
 using Common.Automation.Common.Browser.Settings;
@@ -9,7 +8,7 @@ using Common.Automation.Common.Helpers.DevTools;
 using Common.Automation.Common.Helpers.ScreenShot;
 using TechTalk.SpecFlow;
 
-namespace Automation.Common
+namespace Common.Automation
 {
     [Binding]
     public class SpecFlowDiConfig
