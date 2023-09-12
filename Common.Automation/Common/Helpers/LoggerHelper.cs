@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using ReportPortal.Serilog;
+using Serilog;
 
 namespace Common.Automation.Common.Helpers
 {
@@ -9,7 +10,7 @@ namespace Common.Automation.Common.Helpers
         static LoggerHelper()
         {
             Logger = new LoggerConfiguration()
-                .WriteTo.Console()
+                .WriteTo.Console().WriteTo.ReportPortal()
                 .CreateLogger();
         }
 
