@@ -17,7 +17,6 @@ namespace Common.Automation.Common.Steps
         {
             Navigation.Refresh();
             Window.WaitForPageToLoad();
-            Window.SynchronizePendingRequests();
         }
 
         [Then(@"Current url should contains '(.*)'")]
