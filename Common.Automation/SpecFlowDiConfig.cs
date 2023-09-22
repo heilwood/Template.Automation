@@ -6,11 +6,9 @@ using Common.Automation.Common.ElementActions;
 using Common.Automation.Common.Helpers;
 using Common.Automation.Common.Helpers.DevTools;
 using Common.Automation.Common.Helpers.ScreenShot;
-using TechTalk.SpecFlow;
 
 namespace Common.Automation
 {
-    [Binding]
     public class SpecFlowDiConfig
     {
         public void RegisterServices(IObjectContainer container)
