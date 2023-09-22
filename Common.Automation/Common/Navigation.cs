@@ -23,7 +23,7 @@ namespace Common.Automation.Common
             await Task.WhenAll(loadUrlTask, startNetworkAdapterTask);
 
             WaitForPageToLoad();
-            SynchronizePendingRequests();
+            WaitUntilAllRequestsFinished();
             LoggerHelper.Log().Information($"Url name: {url}");
         }
 

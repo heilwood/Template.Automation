@@ -125,15 +125,6 @@ namespace Common.Automation.Common.ElementActions.ElementsBase
             return false;
         }
 
-        public bool IsPendingRequestsEmpty()
-        {
-            var isFinishedRequests = ResourceLoadingFinished();
-            if (isFinishedRequests) return true;
-
-            NetworkAdapter.ResetPendingRequests();
-            return false;
-        }
-
         public void WaitUntilAllRequestsFinished()
         {
             try
@@ -144,18 +135,6 @@ namespace Common.Automation.Common.ElementActions.ElementsBase
             {
                 var stuckRequests = NetworkAdapter.GetStuckRequests();
                 throw new Exception($"Requests stuck, you can add _requestUrlsToSkip in NetworkAdapterBase.cs: {stuckRequests}");
-            }
-        }
-
-        public void SynchronizePendingRequests()
-        {
-            try
-            {
-                Wait(Driver, 30).Until(_ => IsPendingRequestsEmpty());
-            }
-            catch (WebDriverTimeoutException)
-            {
-                throw new WebDriverTimeoutException($"Can't synchronize requests, some requests still in PendingRequests object in NetworkAdapterBase.cs");
             }
         }
 
