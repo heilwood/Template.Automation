@@ -23,6 +23,7 @@ namespace Common.Automation.Common.Helpers.DevTools
         {
             var session = (driver as IDevTools)?.GetDevToolsSession();
             SetNetworkAdapter(session);
+
             _networkAdapter.ResponseReceived += ResponseReceivedEvent;
             _networkAdapter.LoadingFailed += LoadingFailedEvent;
             _networkAdapter.RequestWillBeSent += RequestEvent;
