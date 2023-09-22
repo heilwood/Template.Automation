@@ -30,7 +30,7 @@ namespace Common.Automation.Common.ElementActions
         {
             if (_textElementBase.GetText(button) == valueText) return;
 
-            Click(button);
+            JavaScriptClick(button);
             WaitUntilVisible(valuesList);
             var value = GetChildByText(valuesList, valueText);
             ClickAndWait(value);

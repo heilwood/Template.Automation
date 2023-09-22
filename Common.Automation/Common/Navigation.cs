@@ -24,6 +24,7 @@ namespace Common.Automation.Common
 
             WaitForPageToLoad();
             WaitUntilAllRequestsFinished();
+
             LoggerHelper.Log().Information($"Url name: {url}");
         }
 

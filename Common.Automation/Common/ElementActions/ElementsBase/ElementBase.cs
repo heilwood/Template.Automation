@@ -117,7 +117,7 @@ namespace Common.Automation.Common.ElementActions.ElementsBase
 
         private bool ResourceLoadingFinished()
         {
-            var coolingPeriod = TimeSpan.FromMilliseconds(700);
+            var coolingPeriod = TimeSpan.FromMilliseconds(800);
             var pendingRequests = NetworkAdapter.GetPendingRequests();
 
             if (!pendingRequests.Any()) return DateTime.Now - _lastRequestTimestamp > coolingPeriod;
