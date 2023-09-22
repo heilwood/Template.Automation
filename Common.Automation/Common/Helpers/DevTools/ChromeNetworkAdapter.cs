@@ -15,37 +15,17 @@ namespace Common.Automation.Common.Helpers.DevTools
             _networkAdapter.Enable(new EnableCommandSettings());
         }
 
-        private void ListenRequests()
-        {
-            _networkAdapter.RequestWillBeSent += RequestEvent;
-            return;
-
-            void RequestEvent(object sender, RequestWillBeSentEventArgs e) => AddRequest(e.Request.Url, e.RequestId);
-        }
-
-        private void ListenLoadingFinished()
-        {
-            _networkAdapter.LoadingFinished += LoadingFinishedEvent;
-            return;
-
-            void LoadingFinishedEvent(object sender, LoadingFinishedEventArgs e) => RemoveRequest(e.RequestId);
-        }
-
-        private void ListenLoadingFailed()
-        {
-            _networkAdapter.LoadingFailed += LoadingFailedEvent;
-            return;
-
-            void LoadingFailedEvent(object sender, LoadingFailedEventArgs e) => RemoveRequest(e.RequestId);
-        }
+        private void RequestEvent(object sender, RequestWillBeSentEventArgs e) => AddRequest(e.Request.Url, e.RequestId);
+        private void ResponseReceivedEvent(object sender, ResponseReceivedEventArgs e) => RemoveRequest(e.RequestId);
+        private void LoadingFailedEvent(object sender, LoadingFailedEventArgs e) => RemoveRequest(e.RequestId);
 
         public override void Start(IWebDriver driver)
         {
             var session = (driver as IDevTools)?.GetDevToolsSession();
             SetNetworkAdapter(session);
-            ListenRequests();
-            ListenLoadingFinished();
-            ListenLoadingFailed();
+            _networkAdapter.LoadingFailed += LoadingFailedEvent;
+            _networkAdapter.ResponseReceived += ResponseReceivedEvent;
+            _networkAdapter.RequestWillBeSent += RequestEvent;
         }
     }
 }

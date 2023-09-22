@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using OpenQA.Selenium;
 
@@ -7,59 +8,30 @@ namespace Common.Automation.Common.Helpers.DevTools
     public abstract class NetworkAdapterBase : INetworkAdapter
     {
         private readonly List<string> _urLsToSkip = new() { ":443", "blob:", "cookielaw", "recaptcha", "data:", ".ads.", "track", "collect", "outlook", "analytics", "google", "facebook", "bing", "giosg", "data.microsoft" };
-        protected Dictionary<string, string> PendingRequests = new();
-
+        protected ConcurrentDictionary<string, string> PendingRequests = new();
         protected const int MaxRequestIdLength = 20;
-        protected readonly object LockObject = new();
-
-
-        public bool ShouldSkipUrl(string url)
-        {
-            return _urLsToSkip.Any(url.Contains);
-        }
 
         public abstract void Start(IWebDriver driver);
 
-        public HashSet<string> GetPendingRequests()
-        {
-            lock (LockObject)
-            {
-                return PendingRequests.Keys.ToHashSet();
-            }
-        }
+        public bool ShouldSkipUrl(string url) => _urLsToSkip.Any(url.Contains);
 
-        public string GetStuckRequests()
-        {
-            var stuckUrls = string.Join(", ", PendingRequests.Values);
-            return stuckUrls;
-        }
+        public HashSet<string> GetPendingRequests() => PendingRequests.Keys.ToHashSet();
 
-        public void ResetPendingRequests()
-        {
-            lock (LockObject)
-            {
-                PendingRequests = new Dictionary<string, string>();
-            }
-        }
+        public string GetStuckRequests() => string.Join(", ", PendingRequests.Values);
+
+        public void ResetPendingRequests() => PendingRequests.Clear();
+
+        public void RemoveRequest(string requestId) => PendingRequests.TryRemove(requestId, out _);
 
         public void AddRequest(string requestUrl, string requestId)
         {
             if (ShouldSkipUrl(requestUrl)) return;
+            if (requestId.Length >= MaxRequestIdLength) return;
 
-            lock (LockObject)
-            {
-                if (requestId.Length >= MaxRequestIdLength) return;
-                PendingRequests[requestId] = requestUrl;
-            }
+            PendingRequests[requestId] = requestUrl;
         }
 
-        public void RemoveRequest(string requestId)
-        {
-            lock (LockObject)
-            {
-                if (!PendingRequests.ContainsKey(requestId)) return;
-                PendingRequests.Remove(requestId);
-            }
-        }
+       
+
     }
 }
