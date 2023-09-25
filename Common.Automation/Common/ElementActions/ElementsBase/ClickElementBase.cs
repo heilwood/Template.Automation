@@ -20,7 +20,7 @@ namespace Common.Automation.Common.ElementActions.ElementsBase
         {
             var executor = (IJavaScriptExecutor)Driver;
             executor.ExecuteScript("arguments[0].click();", element);
-            WaitUntilAllRequestsFinished();
+            WaitUntilRequestsLoaded();
         }
 
         public void Click(By by)
@@ -44,7 +44,7 @@ namespace Common.Automation.Common.ElementActions.ElementsBase
         public virtual void ClickAndWait(IWebElement elem)
         {
             Click(elem);
-            WaitUntilAllRequestsFinished();
+            WaitUntilRequestsLoaded();
         }
     }
 

@@ -23,7 +23,7 @@ namespace Common.Automation.Common.ElementActions
 
             var select = new SelectElement(elem);
             select.SelectByText(valueText);
-            WaitUntilAllRequestsFinished();
+            WaitUntilRequestsLoaded();
         }
 
         public void SelectByText(By button, By valuesList, string valueText)

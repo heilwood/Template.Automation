@@ -125,16 +125,16 @@ namespace Common.Automation.Common.ElementActions.ElementsBase
             return false;
         }
 
-        public void WaitUntilAllRequestsFinished()
+        public void WaitUntilRequestsLoaded()
         {
             try
             {
                 Wait(Driver, 30).Until(_ => ResourceLoadingFinished());
             }
-            catch
+            catch (WebDriverTimeoutException)
             {
                 var stuckRequests = NetworkAdapter.GetStuckRequests();
-                throw new Exception($"Requests stuck, you can add _requestUrlsToSkip in NetworkAdapterBase.cs: {stuckRequests}");
+                throw new WebDriverTimeoutException($"Requests stuck, you can add _requestUrlsToSkip in NetworkAdapterBase.cs: {stuckRequests}");
             }
         }
 
