@@ -2,10 +2,10 @@
 using Common.Automation.Common;
 using Common.Automation.Common.Helpers.DataManager;
 using Common.Automation.Common.Locators;
+using MyProject.Automation.Functional.Pages.Home.Pet_Insurance.TestData;
 using TechTalk.SpecFlow;
-using YourProjectName.Automation.Pages.Home.Pet_Insurance.TestData;
 
-namespace YourProjectName.Automation.Pages.Home.Pet_Insurance
+namespace MyProject.Automation.Functional.Pages.Home.Pet_Insurance
 {
     [Binding]
     public sealed class PetInsuranceSteps : StepBase

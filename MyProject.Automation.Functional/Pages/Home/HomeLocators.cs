@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium;
 
-namespace YourProjectName.Automation.Pages.Home
+namespace MyProject.Automation.Functional.Pages.Home
 {
     public class HomeLocators
     {

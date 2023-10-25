@@ -138,6 +138,26 @@ namespace Common.Automation.Common.ElementActions.ElementsBase
             }
         }
 
+        public bool IsPendingRequestsEmpty()
+        {
+            var isFinishedRequests = ResourceLoadingFinished();
+            if (isFinishedRequests) return true;
+
+            NetworkAdapter.ResetPendingRequests();
+            return false;
+        }
+
+        public void SynchronizePendingRequests()
+        {
+            try
+            {
+                Wait(Driver, 30).Until(_ => IsPendingRequestsEmpty());
+            }
+            catch (WebDriverTimeoutException)
+            {
+                throw new WebDriverTimeoutException($"Can't synchronize requests, some requests still in PendingRequests object in NetworkAdapterBase.cs");
+            }
+        }
         #endregion
     }
 }

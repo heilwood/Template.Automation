@@ -4,7 +4,7 @@ using Common.Automation.Common;
 using Common.Automation.Common.Locators;
 using TechTalk.SpecFlow;
 
-namespace YourProjectName.Automation.Pages.Home
+namespace MyProject.Automation.Functional.Pages.Home
 {
     [Binding]
     public sealed class HomeSteps : StepBase

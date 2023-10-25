@@ -1,32 +1,30 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.DevTools;
-using OpenQA.Selenium.DevTools.V113.Network;
-using DevToolsSessionDomains = OpenQA.Selenium.DevTools.V113.DevToolsSessionDomains;
+using System.Threading.Tasks;
 
 namespace Common.Automation.Common.Helpers.DevTools
 {
     public class ChromeNetworkAdapter : NetworkAdapterBase
     {
-        private volatile NetworkAdapter _networkAdapter;
 
-        private void SetNetworkAdapter(DevToolsSession session)
+        void ResponseSentEvent(object sender, NetworkResponseReceivedEventArgs e) => RemoveRequest(e.RequestId);
+        void RequestSentEvent(object sender, NetworkRequestSentEventArgs e) => AddRequest(e.RequestUrl, e.RequestId);
+
+        public async Task MonitorNetwork(IWebDriver driver)
         {
-            _networkAdapter = session.GetVersionSpecificDomains<DevToolsSessionDomains>().Network;
-            _networkAdapter.Enable(new EnableCommandSettings());
-        }
+            if (IsListening) return;
 
-        private void RequestEvent(object sender, RequestWillBeSentEventArgs e) => AddRequest(e.Request.Url, e.RequestId);
-        private void ResponseReceivedEvent(object sender, ResponseReceivedEventArgs e) => RemoveRequest(e.RequestId);
-        private void LoadingFailedEvent(object sender, LoadingFailedEventArgs e) => RemoveRequest(e.RequestId);
+            var networkInterceptor = driver.Manage().Network;
+
+            networkInterceptor.NetworkResponseReceived += ResponseSentEvent;
+            networkInterceptor.NetworkRequestSent += RequestSentEvent;
+
+            await networkInterceptor.StartMonitoring();
+            IsListening = true;
+        }
 
         public override void Start(IWebDriver driver)
         {
-            var session = (driver as IDevTools)?.GetDevToolsSession();
-            SetNetworkAdapter(session);
-
-            _networkAdapter.LoadingFailed += LoadingFailedEvent;
-            _networkAdapter.ResponseReceived += ResponseReceivedEvent;
-            _networkAdapter.RequestWillBeSent += RequestEvent;
+            MonitorNetwork(driver).Wait();
         }
     }
 }

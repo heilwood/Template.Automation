@@ -5,7 +5,7 @@ VisualStudioVersion = 17.7.34009.444
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Automation", "Common.Automation\Common.Automation.csproj", "{E5F59850-2E52-4EC1-9778-A7D0912B84E9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YourProjectName.Automation", "YourProjectName.Automation\YourProjectName.Automation.csproj", "{B2438DC6-4835-48FC-B3BD-945AD8A162DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyProject.Automation.Functional", "MyProject.Automation.Functional\MyProject.Automation.Functional.csproj", "{B2438DC6-4835-48FC-B3BD-945AD8A162DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

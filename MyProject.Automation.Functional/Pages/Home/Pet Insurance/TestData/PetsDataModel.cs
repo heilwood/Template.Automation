@@ -1,6 +1,6 @@
 ﻿using Common.Automation.Common.Helpers.DataManager;
 
-namespace YourProjectName.Automation.Pages.Home.Pet_Insurance.TestData
+namespace MyProject.Automation.Functional.Pages.Home.Pet_Insurance.TestData
 {
     public class PetsDataModel : DataModelBase<PetsDataModel>
     {

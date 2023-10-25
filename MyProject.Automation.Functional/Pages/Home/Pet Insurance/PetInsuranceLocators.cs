@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium;
 
-namespace YourProjectName.Automation.Pages.Home.Pet_Insurance
+namespace MyProject.Automation.Functional.Pages.Home.Pet_Insurance
 {
     public class PetInsuranceLocators
     {

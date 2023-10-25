@@ -23,9 +23,9 @@ namespace Common.Automation.Common
             await Task.WhenAll(loadUrlTask, startNetworkAdapterTask);
 
             WaitForPageToLoad();
-            WaitUntilRequestsLoaded();
-
+            
             LoggerHelper.Log().Information($"Url name: {url}");
+            SynchronizePendingRequests();
         }
 
         public void Refresh()

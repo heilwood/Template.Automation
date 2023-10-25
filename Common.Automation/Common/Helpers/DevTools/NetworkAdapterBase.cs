@@ -10,7 +10,7 @@ namespace Common.Automation.Common.Helpers.DevTools
         private readonly List<string> _urLsToSkip = new() { ":443", "blob:", "cookielaw", "recaptcha", "data:", ".ads.", "track", "collect", "outlook", "analytics", "google", "facebook", "bing", "giosg", "data.microsoft" };
         protected ConcurrentDictionary<string, string> PendingRequests = new();
         protected const int MaxRequestIdLength = 20;
-
+        protected bool IsListening;
         public abstract void Start(IWebDriver driver);
 
         public bool ShouldSkipUrl(string url) => _urLsToSkip.Any(url.Contains);
