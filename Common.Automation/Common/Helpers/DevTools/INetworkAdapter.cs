@@ -9,5 +9,6 @@ namespace Common.Automation.Common.Helpers.DevTools
         string GetStuckRequests();
         void ResetPendingRequests();
         void Start(IWebDriver driver);
+        void Stop();
     }
 }

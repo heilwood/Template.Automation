@@ -117,7 +117,7 @@ namespace Common.Automation.Common.ElementActions.ElementsBase
 
         private bool ResourceLoadingFinished()
         {
-            var coolingPeriod = TimeSpan.FromMilliseconds(800);
+            var coolingPeriod = TimeSpan.FromMilliseconds(500);
             var pendingRequests = NetworkAdapter.GetPendingRequests();
 
             if (!pendingRequests.Any()) return DateTime.Now - _lastRequestTimestamp > coolingPeriod;
@@ -129,7 +129,9 @@ namespace Common.Automation.Common.ElementActions.ElementsBase
         {
             try
             {
+                NetworkAdapter.Start(Driver);
                 Wait(Driver, 30).Until(_ => ResourceLoadingFinished());
+                NetworkAdapter.Stop();
             }
             catch (WebDriverTimeoutException)
             {
@@ -151,7 +153,9 @@ namespace Common.Automation.Common.ElementActions.ElementsBase
         {
             try
             {
+                NetworkAdapter.Start(Driver);
                 Wait(Driver, 30).Until(_ => IsPendingRequestsEmpty());
+                NetworkAdapter.Stop();
             }
             catch (WebDriverTimeoutException)
             {
