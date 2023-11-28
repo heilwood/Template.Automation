@@ -11,11 +11,8 @@ namespace Common.Automation.Common.Helpers.DevTools
 
         private void SetNetworkAdapter(DevToolsSession session)
         {
-            if (_networkAdapter == null)
-            {
                 _networkAdapter = session.GetVersionSpecificDomains<DevToolsSessionDomains>().Network;
                 _networkAdapter.Enable(new EnableCommandSettings());
-            }
         }
 
         private void RequestEvent(object sender, RequestWillBeSentEventArgs e) => AddRequest(e.Request.Url, e.RequestId);
@@ -25,14 +22,18 @@ namespace Common.Automation.Common.Helpers.DevTools
 
         public override void Start(IWebDriver driver)
         {
-            var session = (driver as IDevTools)?.GetDevToolsSession();
-            SetNetworkAdapter(session);
+            if (_networkAdapter == null)
+            {
+                var session = (driver as IDevTools)?.GetDevToolsSession();
+                SetNetworkAdapter(session);
+            }
+
+            if (_networkAdapter == null) return;
 
             _networkAdapter.RequestWillBeSent += RequestEvent;
             _networkAdapter.ResponseReceived += ResponseReceivedEvent;
             _networkAdapter.LoadingFailed += LoadingFailedEvent;
             _networkAdapter.LoadingFinished += LoadingFinishedEvent;
-            
         }
 
         public override void Stop()

@@ -11,15 +11,15 @@ namespace Common.Automation.Common.Helpers.DevTools
 
         public async Task MonitorNetwork(IWebDriver driver)
         {
-            _networkInterceptor?.StopMonitoring();
+            if (_networkInterceptor == null)
+            {
+                var networkInterceptor = driver.Manage().Network;
+                _networkInterceptor = networkInterceptor;
+                await _networkInterceptor.StartMonitoring();
+            }
 
-            var networkInterceptor = driver.Manage().Network;
-
-            networkInterceptor.NetworkResponseReceived += ResponseSentEvent;
-            networkInterceptor.NetworkRequestSent += RequestSentEvent;
-
-            await networkInterceptor.StartMonitoring();
-            _networkInterceptor = networkInterceptor;
+            _networkInterceptor.NetworkResponseReceived += ResponseSentEvent;
+            _networkInterceptor.NetworkRequestSent += RequestSentEvent;
         }
 
         public override void Start(IWebDriver driver)
@@ -29,7 +29,8 @@ namespace Common.Automation.Common.Helpers.DevTools
 
         public override void Stop()
         {
-            _networkInterceptor.StopMonitoring();
+            _networkInterceptor.NetworkResponseReceived -= ResponseSentEvent;
+            _networkInterceptor.NetworkRequestSent -= RequestSentEvent;
         }
     }
 }
