@@ -48,10 +48,10 @@ namespace Common.Automation.Common.ElementActions.ElementsBase
 
         public string GetTextWithNoSpaces(By by)
         {
-            return RemovTextSpaces(GetTextByAttribute(by));
+            return RemoveTextSpaces(GetTextByAttribute(by));
         }
 
-        public string RemovTextSpaces(string text)
+        public string RemoveTextSpaces(string text)
         {
             return text.Replace(" ", "").Replace(" ", "");
         }
