@@ -18,6 +18,7 @@ namespace Common.Automation.Common.ElementActions.ElementsBase
 
         public void JavaScriptClick(IWebElement element)
         {
+            NetworkAdapter.Start(Driver);
             var executor = (IJavaScriptExecutor)Driver;
             executor.ExecuteScript("arguments[0].click();", element);
             WaitUntilRequestsLoaded();
@@ -43,6 +44,7 @@ namespace Common.Automation.Common.ElementActions.ElementsBase
 
         public virtual void ClickAndWait(IWebElement elem)
         {
+            NetworkAdapter.Start(Driver);
             Click(elem);
             WaitUntilRequestsLoaded();
         }

@@ -129,7 +129,6 @@ namespace Common.Automation.Common.ElementActions.ElementsBase
         {
             try
             {
-                NetworkAdapter.Start(Driver);
                 Wait(Driver, 30).Until(_ => ResourceLoadingFinished());
                 NetworkAdapter.Stop();
             }
@@ -153,7 +152,6 @@ namespace Common.Automation.Common.ElementActions.ElementsBase
         {
             try
             {
-                NetworkAdapter.Start(Driver);
                 Wait(Driver, 30).Until(_ => IsPendingRequestsEmpty());
                 NetworkAdapter.Stop();
             }
